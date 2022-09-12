@@ -2,9 +2,6 @@
 ###############################################################################
 # Configuration of OpenStack projects and users user environment.
 
-# Path to create virtualenv in which to install python dependencies.
-#openstack_venv:
-
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
 #openstack_projects:
@@ -39,7 +36,7 @@
 #openstack_host_aggregates:
 
 ###############################################################################
-# Configuration of Magnum software images.
+# Configuration of Glance software images.
 
 # List of Glance images. Format is as required by the stackhpc.os-images role.
 #openstack_images:
