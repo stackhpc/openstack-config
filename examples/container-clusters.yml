@@ -1,0 +1,26 @@
+---
+###############################################################################
+# Configuration of Magnum container clusters.
+
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+openstack_container_clusters_templates:
+  - "{{ openstack_container_clusters_template_k8s_fedora_coreos }}"
+
+# Kubernetes magnum cluster template.
+openstack_container_clusters_template_k8s_fedora_coreos:
+  labels: "heat_container_agent_tag=ussuri-stable-1,kube_tag=v1.18.9,cloud_provider_tag=v1.18.2,monitoring_enabled=true,auto_scaling_enabled=true,auto_healing_enabled=true,auto_healing_controller=magnum-auto-healer,magnum_auto_healer_tag=latest,master_lb_floating_ip_enabled=true,cinder_csi_enabled=true,ingress_controller=octavia"
+  external-network: "external"
+  master-flavor: "m1.medium"
+  flavor: "m1.medium"
+  image: "FedoraCoreOS32"
+  name: "k8s-fedora-coreos-32"
+  coe: "kubernetes"
+  network-driver: "calico"
+  docker-storage_driver: "overlay2"
+  volume-driver: "cinder"
+  server-type: "vm"
+  master-lb-enabled:
+  floating-ip-enabled:
+  public:
+  dns-nameserver: "8.8.8.8"

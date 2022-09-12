@@ -1,0 +1,20 @@
+---
+###############################################################################
+# Configuration of nova flavors for openstack.
+
+# List of nova flavors in the openstack demo project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors:
+  - "{{ openstack_flavor_baremetal_A }}"
+
+# Bare metal compute node.
+openstack_flavor_baremetal_A:
+  name: "baremetal-A"
+  ram: 65536
+  disk: 0
+  vcpus: 64
+  extra_specs:
+    "resources:CUSTOM_BAREMETAL_A": 1
+    "resources:VCPU": 0
+    "resources:MEMORY_MB": 0
+    "resources:DISK_GB": 0
