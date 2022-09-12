@@ -1,0 +1,17 @@
+---
+###############################################################################
+# Configuration of nova host aggregates for openstack.
+
+# List of nova host aggregates. Format is as required by the
+# stackhpc.os_host_aggregates role.
+
+openstack_host_aggregates:
+  - "{{ openstack_example_aggregate }}"
+
+openstack_example_aggregate:
+  name: "example_aggregate"
+  hosts:
+    - host1
+    - host2
+  metadata:
+    type: example_cluster

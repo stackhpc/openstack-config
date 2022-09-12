@@ -1,0 +1,137 @@
+---
+###############################################################################
+# Configuration of networks, subnets and routers for openstack.
+
+# List of networks in the openstack system. Format is as required by the
+# stackhpc.os-networks role.
+openstack_networks:
+  - "{{ openstack_network_external }}"
+  - "{{ openstack_network_demo_vxlan }}"
+  - "{{ openstack_network_demo_vlan }}"
+  - "{{ openstack_network_demo_provider }}"
+
+# openstack external network name.
+openstack_network_external_name: "external"
+
+# openstack external network.
+openstack_network_external:
+  name: "{{ openstack_network_external_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 60
+  shared: true
+  external: true
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_external }}"
+
+# openstack external subnet.
+openstack_subnet_external:
+  name: "{{ openstack_network_external_name }}"
+  project: "admin"
+  cidr: "10.60.0.0/16"
+  gateway_ip: "10.60.255.1"
+  allocation_pool_start: "10.60.2.0"
+  allocation_pool_end: "10.60.5.255"
+
+# openstack demo VXLAN network name.
+openstack_network_demo_vxlan_name: "demo-vxlan"
+
+# openstack demo VXLAN network.
+openstack_network_demo_vxlan:
+  name: "{{ openstack_network_demo_vxlan_name }}"
+  project: demo
+  provider_network_type: "vxlan"
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_demo_vxlan }}"
+
+# openstack demo VXLAN subnet.
+openstack_subnet_demo_vxlan:
+  name: "{{ openstack_network_demo_vxlan_name }}"
+  project: demo
+  cidr: "10.1.0.0/24"
+  gateway_ip: "10.1.0.1"
+  allocation_pool_start: "10.1.0.2"
+  allocation_pool_end: "10.1.0.254"
+
+# openstack demo VLAN network name.
+openstack_network_demo_vlan_name: "demo-vlan"
+
+# openstack demo VLAN network.
+openstack_network_demo_vlan:
+  name: "{{ openstack_network_demo_vlan_name }}"
+  project: demo
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_demo_vlan }}"
+
+# openstack demo VLAN subnet.
+openstack_subnet_demo_vlan:
+  name: "{{ openstack_network_demo_vlan_name }}"
+  project: demo
+  cidr: "10.0.0.0/24"
+  gateway_ip: "10.0.0.1"
+  allocation_pool_start: "10.0.0.2"
+  allocation_pool_end: "10.0.0.254"
+
+# openstack demo provider VLAN network name.
+openstack_network_demo_provider_name: "demo-provider"
+
+# openstack demo provider VLAN
+openstack_network_demo_provider:
+  name: "{{ openstack_network_demo_provider_name }}"
+  project: demo
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 100
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_demo_provider }}"
+
+# openstack demo provider VLAN subnet
+openstack_subnet_demo_provider:
+  name: "{{ openstack_network_demo_provider_name }}"
+  project: demo
+  cidr: "10.100.0.0/16"
+  gateway_ip: "10.100.0.1"
+  allocation_pool_start: "10.100.1.0"
+  allocation_pool_end: "10.100.99.255"
+  host_routes:
+    - destination: "10.66.0.0/16"
+      nexthop: "10.100.0.2"
+
+# List of routers in the openstack demo project. Format is as required by the
+# stackhpc.os-networks role.
+openstack_routers:
+  - "{{ openstack_router_demo }}"
+
+# openstack demo router.
+openstack_router_demo:
+  - name: demo
+    project: demo
+    interfaces:
+      - "{{ openstack_network_demo_vlan_name }}"
+      - "{{ openstack_network_demo_vxlan_name }}"
+      - "{{ openstack_network_demo_provider_name }}"
+    network: "{{ openstack_network_external_name }}"
+
+# List of security groups in the openstack demo project.
+# Format is as required by the stackhpc.os-networks role.
+openstack_security_groups:
+  # Default security group for the openstack demo project.
+  - name: default
+    project: demo
+    rules:
+      # Allow ICMP (for ping, etc.).
+      - protocol: icmp
+      # Allow SSH.
+      - protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
