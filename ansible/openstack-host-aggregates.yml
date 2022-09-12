@@ -1,0 +1,12 @@
+---
+- name: Ensure OpenStack OpenStack nova host aggregates exist
+  hosts: localhost
+  tags:
+    - host_aggregates
+  roles:
+    - role: stackhpc.os_host_aggregates
+      os_host_aggregates_venv: "{{ openstack_venv }}"
+      os_host_aggregates_auth_type: "{{ openstack_auth_type }}"
+      os_host_aggregates_auth: "{{ openstack_auth }}"
+      os_host_aggregates_cacert: "{{ openstack_cacert }}"
+      os_host_aggregates: "{{ openstack_host_aggregates }}"

@@ -1,0 +1,14 @@
+---
+- name: Ensure OpenStack OpenStack networks exist
+  hosts: localhost
+  tags:
+    - networks
+  roles:
+    - role: stackhpc.os-networks
+      os_networks_venv: "{{ openstack_venv }}"
+      os_networks_auth_type: "{{ openstack_auth_type }}"
+      os_networks_auth: "{{ openstack_auth }}"
+      os_networks_cacert: "{{ openstack_cacert }}"
+      os_networks: "{{ openstack_networks }}"
+      os_networks_routers: "{{ openstack_routers }}"
+      os_networks_security_groups: "{{ openstack_security_groups }}"

@@ -1,0 +1,12 @@
+---
+- name: Ensure OpenStack container clusters templates exist
+  hosts: localhost
+  tags:
+    - container-clusters-templates
+  roles:
+    - role: stackhpc.os-container-clusters
+      os_container_clusters_venv: "{{ openstack_venv }}"
+      os_container_clusters_auth_type: "{{ openstack_auth_type }}"
+      os_container_clusters_auth: "{{ openstack_auth }}"
+      os_container_clusters_cacert: "{{ openstack_cacert }}"
+      os_container_clusters_templates: "{{ openstack_container_clusters_templates }}"

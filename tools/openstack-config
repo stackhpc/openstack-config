@@ -1,0 +1,37 @@
+#!/bin/sh
+
+SCRIPT=${BASH_SOURCE[0]}
+TOOLS_PATH=$(dirname ${SCRIPT})
+OPENSTACK_CONFIG_PATH=$(dirname ${TOOLS_PATH})
+cd ${OPENSTACK_CONFIG_PATH}
+
+PLAYBOOK=ansible/openstack.yml
+
+while getopts ":p:" opt; do
+  case $opt in
+    p)
+      PLAYBOOK=${OPTARG}
+      ;;
+    \?)
+      echo "Invalid option: -$opt"
+      echo "Usage: ${0} [-p <playbook>] [-- <other arguments to ansible-playbook>]"
+      exit 1
+      ;;
+  esac
+  if [[ -n ${OPTARG} ]]; then
+    shift
+  fi
+  shift
+done
+
+if [[ $1 == '--' ]]; then
+    shift
+fi
+
+echo "Running playbook $PLAYBOOK"
+
+exec ansible-playbook \
+  ${PLAYBOOK} \
+  -i ansible/inventory \
+  -e @etc/openstack-config/openstack-config.yml \
+  $@
