@@ -1,551 +1,59 @@
 ---
 ###############################################################################
-# Configuration of OpenStack user environment for OpenStack.
+# Configuration of OpenStack projects and users user environment.
 
 # Path to create virtualenv in which to install python dependencies.
 #openstack_venv:
 
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
-openstack_projects:
-  - "{{ openstack_demo_project }}"
-
-# Definition of the openstack demo project. Format is as required by the
-# stackhpc.os-projects role.
-openstack_demo_project:
-  name: demo
-  description: OpenStack demo project
-  project_domain: default
-  user_domain: default
-  users: "{{ openstack_resops_users }}"
-  quotas: "{{ openstack_unlimited_quotas }}"
-
-# List of users in the openstack ResOps team. Format is as required by the
-# stackhpc.os-projects role.
-openstack_resops_users:
-  - name: hpcgodd1
-    password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      37386366333266356464663865316538653361313830633036626436613432636361386463373139
-      3530303436393137613263656530333465313861316336330a623562323161326330383237303061
-      63663266383362336361666134313364653037623430363638363333346435366230613135623763
-      3063346333353831650a373138346633663663343638656163346533663735626133306438363066
-      6638
-    roles: "{{ openstack_admin_roles }}"
-
-# List of roles to apply to admin users in the openstack demo project.
-openstack_admin_roles:
-  - admin
-  - heat_stack_owner
-
-# List of roles to apply to regular users in the openstack demo project.
-openstack_user_roles:
-  - heat_stack_owner
-  - observer
-
-# Dict of quotas to set for projects with unlimited resource quotas
-openstack_unlimited_quotas:
-  backup_gigabytes: -1
-  backups: -1
-  cores: -1
-  fixed_ips: -1
-  floatingip: -1
-  gigabytes: -1
-  injected_file_size: -1
-  injected_files: -1
-  instances: -1
-  key_pairs: -1
-  per_volume_gigabytes: -1
-  ram: -1
-  security_group: -1
-  security_group_rule: -1
-  snapshots: -1
-  volumes: -1
+#openstack_projects:
 
 ###############################################################################
-# Configuration of networks, subnets and routers for openstack.
+# Configuration of networks, subnets and routers.
 
 # List of networks in the openstack system. Format is as required by the
 # stackhpc.os-networks role.
-openstack_networks:
-  - "{{ openstack_network_external }}"
-  - "{{ openstack_network_internal }}"
-  - "{{ openstack_network_inspection }}"
-  - "{{ openstack_network_storage }}"
-  - "{{ openstack_network_demo_vlan }}"
-  - "{{ openstack_network_demo_vxlan }}"
-  - "{{ openstack_network_demo_hs_vlan }}"
-  - "{{ openstack_network_demo_provider }}"
-  - "{{ openstack_network_infiniband }}"
+#openstack_networks:
 
-# openstack external network name.
-openstack_network_external_name: "external"
-
-# openstack external network.
-openstack_network_external:
-  name: "{{ openstack_network_external_name }}"
-  project: "admin"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  provider_segmentation_id: 60
-  shared: true
-  external: true
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_external }}"
-
-# openstack external subnet.
-openstack_subnet_external:
-  name: "{{ openstack_network_external_name }}"
-  project: "admin"
-  cidr: "10.60.0.0/16"
-  gateway_ip: "10.60.255.1"
-  allocation_pool_start: "10.60.2.0"
-  allocation_pool_end: "10.60.5.255"
-  # TODO: Add host route to storage subnet.
-
-# openstack internal network name.
-openstack_network_internal_name: "internal"
-
-# openstack internal network.
-openstack_network_internal:
-  name: "{{ openstack_network_internal_name }}"
-  project: "admin"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  provider_segmentation_id: 65
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_internal }}"
-
-# openstack internal subnet.
-openstack_subnet_internal:
-  name: "{{ openstack_network_internal_name }}"
-  project: "admin"
-  cidr: "10.65.0.0/16"
-  enable_dhcp: false
-  allocation_pool_start: "10.65.0.2"
-  allocation_pool_end: "10.65.0.4"
-
-# openstack inspection network name.
-openstack_network_inspection_name: "inspection-net"
-
-# openstack inspection network.
-openstack_network_inspection:
-  name: "{{ openstack_network_inspection_name }}"
-  project: "admin"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  provider_segmentation_id: 71
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_inspection }}"
-
-# openstack inspection subnet.
-openstack_subnet_inspection:
-  name: "{{ openstack_network_inspection_name }}"
-  project: "admin"
-  cidr: "10.71.0.0/16"
-  enable_dhcp: false
-  allocation_pool_start: "10.71.0.1"
-  allocation_pool_end: "10.71.0.1"
-
-# openstack storage network name.
-openstack_network_storage_name: "storage"
-
-# openstack storage network.
-openstack_network_storage:
-  name: "{{ openstack_network_storage_name }}"
-  project: "admin"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  provider_segmentation_id: 66
-  shared: true
-  external: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_storage }}"
-
-# openstack storage subnet.
-openstack_subnet_storage:
-  name: "{{ openstack_network_storage_name }}"
-  project: "admin"
-  cidr: "10.66.0.0/16"
-  allocation_pool_start: "10.66.2.0"
-  allocation_pool_end: "10.66.2.255"
-
-# openstack demo VLAN network name.
-openstack_network_demo_vlan_name: "demo-vlan"
-
-# openstack demo VLAN network.
-openstack_network_demo_vlan:
-  name: "{{ openstack_network_demo_vlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_demo_vlan }}"
-
-# openstack demo VLAN subnet.
-openstack_subnet_demo_vlan:
-  name: "{{ openstack_network_demo_vlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  cidr: "10.0.0.0/24"
-  gateway_ip: "10.0.0.1"
-  allocation_pool_start: "10.0.0.2"
-  allocation_pool_end: "10.0.0.254"
-
-# openstack demo VXLAN network name.
-openstack_network_demo_vxlan_name: "demo-vxlan"
-
-# openstack demo VXLAN network.
-openstack_network_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  provider_network_type: "vxlan"
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_demo_vxlan }}"
-
-# openstack demo VXLAN subnet.
-openstack_subnet_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  cidr: "10.1.0.0/24"
-  gateway_ip: "10.1.0.1"
-  allocation_pool_start: "10.1.0.2"
-  allocation_pool_end: "10.1.0.254"
-
-# openstack demo provider VLAN network name.
-openstack_network_demo_provider_name: "demo-provider"
-
-# openstack demo provider VLAN
-openstack_network_demo_provider:
-  name: "{{ openstack_network_demo_provider_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet1"
-  provider_segmentation_id: 100
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_demo_provider }}"
-
-# openstack demo provider VLAN subnet
-openstack_subnet_demo_provider:
-  name: "{{ openstack_network_demo_provider_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  cidr: "10.100.0.0/16"
-  gateway_ip: "10.100.0.1"
-  allocation_pool_start: "10.100.1.0"
-  allocation_pool_end: "10.100.99.255"
-  host_routes:
-    - destination: "10.66.0.0/16"
-      nexthop: "10.100.0.2"
-
-# openstack demo high speed VLAN network name.
-openstack_network_demo_hs_vlan_name: "demo-hs-vlan"
-
-# openstack demo high speed VLAN network.
-openstack_network_demo_hs_vlan:
-  name: "{{ openstack_network_demo_hs_vlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  provider_network_type: "vlan"
-  provider_physical_network: "physnet2"
-  shared: false
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_demo_hs_vlan }}"
-
-# openstack demo high speed VLAN subnet.
-openstack_subnet_demo_hs_vlan:
-  name: "{{ openstack_network_demo_hs_vlan_name }}"
-  project: "{{ openstack_demo_project.name }}"
-  cidr: "10.2.0.0/24"
-  gateway_ip: "10.2.0.1"
-  allocation_pool_start: "10.2.0.2"
-  allocation_pool_end: "10.2.0.254"
-
-# openstack demo InfiniBand network name.
-openstack_network_infiniband_name: "infiniband"
-
-# openstack demo InfiniBand network.
-openstack_network_infiniband:
-  name: "{{ openstack_network_infiniband_name }}"
-  project: "admin"
-  provider_network_type: "flat"
-  provider_physical_network: "physnet3"
-  shared: true
-  # Subnet configuration.
-  subnets:
-    - "{{ openstack_subnet_infiniband }}"
-
-# openstack demo InfiniBand subnet.
-openstack_subnet_infiniband:
-  name: "{{ openstack_network_infiniband_name }}"
-  project: "admin"
-  cidr: "10.3.0.0/16"
-  enable_dhcp: false
-  allocation_pool_start: "10.3.0.1"
-  allocation_pool_end: "10.3.0.254"
-
-# List of routers in the openstack demo project. Format is as required by the
+# List of routers in the openstack project. Format is as required by the
 # stackhpc.os-networks role.
-openstack_routers:
-  - "{{ openstack_router_provision }}"
-  - "{{ openstack_router_cleaning }}"
-  - "{{ openstack_router_inspection }}"
-  - "{{ openstack_router_demo }}"
+#openstack_routers:
 
-# openstack bare metal provisioning router.
-openstack_router_provision:
-  - name: "provision"
-    project: "admin"
-    interfaces:
-      - net: "{{ openstack_network_internal_name }}"
-        subnet: "{{ openstack_network_internal_name }}"
-        portip: "10.65.0.2"
-      - net: "provision-net"
-        subnet: "provision-net"
-        portip: "10.69.0.1"
-
-# openstack bare metal cleaning router.
-openstack_router_cleaning:
-  - name: "cleaning"
-    project: "admin"
-    interfaces:
-      - net: "{{ openstack_network_internal_name }}"
-        subnet: "{{ openstack_network_internal_name }}"
-        portip: "10.65.0.3"
-      - net: "cleaning-net"
-        subnet: "cleaning-net"
-        portip: "10.70.0.1"
-
-# openstack bare metal inspection router.
-openstack_router_inspection:
-  - name: "inspection"
-    project: "admin"
-    interfaces:
-      - net: "{{ openstack_network_internal_name }}"
-        subnet: "{{ openstack_network_internal_name }}"
-        portip: "10.65.0.4"
-      - net: "inspection-net"
-        subnet: "inspection-net"
-        portip: "10.71.0.1"
-
-# openstack demo router.
-openstack_router_demo:
-  - name: "{{ openstack_demo_project.name }}"
-    project: "{{ openstack_demo_project.name }}"
-    interfaces:
-      - "{{ openstack_network_demo_vlan_name }}"
-      - "{{ openstack_network_demo_vxlan_name }}"
-      - "{{ openstack_network_demo_hs_vlan_name }}"
-      - "{{ openstack_network_demo_provider_name }}"
-    network: "{{ openstack_network_external_name }}"
-
-# List of security groups in the openstack demo project.
+# List of security groups in the openstack project.
 # Format is as required by the stackhpc.os-networks role.
-openstack_security_groups:
-  # Default security group for the openstack demo project.
-  - name: default
-    project: "{{ openstack_demo_project.name }}"
-    rules:
-      # Allow ICMP (for ping, etc.).
-      - protocol: icmp
-      # Allow SSH.
-      - protocol: tcp
-        port_range_min: 22
-        port_range_max: 22
+#openstack_security_groups:
 
 ###############################################################################
-# Configuration of nova flavors for openstack.
+# Configuration of nova flavors.
 
-# List of nova flavors in the openstack demo project. Format is as required by the
+# List of nova flavors in the openstack project. Format is as required by the
 # stackhpc.os-flavors role.
-openstack_flavors:
-  - "{{ openstack_flavor_baremetal_A }}"
-  - "{{ openstack_flavor_m1_tiny }}"
-  - "{{ openstack_flavor_m1_small }}"
-  - "{{ openstack_flavor_m1_medium }}"
-  - "{{ openstack_flavor_m1_large }}"
-  - "{{ openstack_flavor_m1_xlarge }}"
-
-# Bare metal compute node.
-openstack_flavor_baremetal_A:
-  name: "baremetal-A"
-  ram: 65536
-  disk: 0
-  vcpus: 64
-  extra_specs:
-    "resources:CUSTOM_BAREMETAL_A": 1
-    "resources:VCPU": 0
-    "resources:MEMORY_MB": 0
-    "resources:DISK_GB": 0
-
-# Virtual machine flavors.
-openstack_flavor_m1_tiny:
-  name: "m1.tiny"
-  ram: 512
-  disk: 1
-  vcpus: 1
-
-openstack_flavor_m1_small:
-  name: "m1.small"
-  ram: 2048
-  disk: 20
-  vcpus: 1
-
-openstack_flavor_m1_medium:
-  name: "m1.medium"
-  ram: 4096
-  disk: 40
-  vcpus: 2
-
-openstack_flavor_m1_large:
-  name: "m1.large"
-  ram: 8192
-  disk: 40
-  vcpus: 4
-
-openstack_flavor_m1_xlarge:
-  name: "m1.xlarge"
-  ram: 16384
-  disk: 100
-  vcpus: 8
+#openstack_flavors:
 
 ###############################################################################
-# Configuration of nova host aggregates for openstack.
+# Configuration of nova host aggregates.
 
 # List of nova host aggregates. Format is as required by the
 # stackhpc.os_host_aggregates role.
-
-openstack_host_aggregates:
-  - "{{ openstack_example_aggregate }}"
-
-openstack_example_aggregate:
-  name: "example_aggregate"
-  hosts:
-    - host1
-    - host2
-  metadata:
-    type: example_cluster
+#openstack_host_aggregates:
 
 ###############################################################################
-# Software images for openstack
+# Configuration of Magnum software images.
 
-openstack_images:
-  - "{{ openstack_image_centos }}"
-  - "{{ openstack_image_centos_ib }}"
-  - "{{ openstack_image_centos_ohpc }}"
-  - "{{ openstack_image_fedora_coreos_32 }}"
+# List of Glance images. Format is as required by the stackhpc.os-images role.
+#openstack_images:
 
-# Latest CentOS image
-openstack_image_centos:
-  name: "CentOS7.5"
-  elements:
-    - "centos7"
-    - "epel"
-    - "selinux-permissive"
-    - "dhcp-all-interfaces"
-    - "vm"
-  properties:
-    os_distro: "centos"
-    os_version: "7.5"
+# List of Diskimage Builder (DIB) elements paths to include in image builds.
+#openstack_image_elements:
 
-# Latest CentOS image, with support for accessing the InfiniBand network.
-openstack_image_centos_ib:
-  name: "CentOS7.5-IB"
-  elements:
-    - "centos7"
-    - "epel"
-    - "selinux-permissive"
-    - "dhcp-all-interfaces"
-    - "vm"
-    - "systemd-modules-load"
-  env:
-    DIB_SYSTEMD_MODULES_LOAD_CONTENT: "{{ openstack_systemd_modules_load_ipoib }}"
-    DIB_YUM_REPO_CONF: "{{ openstack_cloud_init_0_7_9_25_repo_file }}"
-  properties:
-    os_distro: "centos"
-    os_version: "7.5"
+# List of Diskimage Builder (DIB) elements Git repositories to use in image
+# builds.
+#openstack_image_git_elements:
 
-# Latest CentOS image, with OpenHPC and support for accessing the InfiniBand network.
-openstack_image_centos_ohpc:
-  name: "CentOS7.5-OpenHPC"
-  elements:
-    - "centos7"
-    - "epel"
-    - "openhpc"
-    - "selinux-permissive"
-    - "dhcp-all-interfaces"
-    - "vm"
-    - "systemd-modules-load"
-  env:
-    DIB_SYSTEMD_MODULES_LOAD_CONTENT: "{{ openstack_systemd_modules_load_ipoib }}"
-    DIB_YUM_REPO_CONF: "{{ openstack_cloud_init_0_7_9_25_repo_file }}"
-    DIB_OPENHPC_GRPLIST: "ohpc-base-compute ohpc-slurm-client 'InfiniBand Support'"
-    DIB_OPENHPC_PKGLIST: "lmod-ohpc mrsh-ohpc lustre-client-ohpc mvapich2-gnu-ohpc ntp"
-    DIB_OPENHPC_DELETE_REPO: "n"
-  properties:
-    os_distro: "centos"
-    os_version: "7.5"
+###############################################################################
+# Configuration of Magnum container clusters.
 
-# Latest stable Fedora Coreos 32 for Magnum
-openstack_image_fedora_coreos_32:
-  name: "FedoraCoreOS32"
-  type: "raw"
-  image_url: "https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/32.20200824.3.0/x86_64/fedora-coreos-32.20200824.3.0-openstack.x86_64.qcow2.xz"
-  properties:
-    os_distro: "fedora-coreos"
-    os_version: "32"
-
-# This creates a git checkout in the local user's home directory
-openstack_image_stackhpc_elements: "{{ ansible_env.PWD }}/stackhpc-image-elements"
-
-openstack_image_git_elements:
-  - repo: "https://github.com/stackhpc/stackhpc-image-elements.git"
-    local: "{{ openstack_image_stackhpc_elements }}"
-
-# Path to include
-openstack_image_elements:
-  - "{{ openstack_image_stackhpc_elements }}/elements"
-
-# Yum repository config file for cloud-init repo.
-# This contains a patched cloud-init package with support for configuring IP
-# over Infiniband interfaces defined in a config drive.
-openstack_cloud_init_0_7_9_25_repo_file: "{{ playbook_dir }}/files/cloud-init-0.7.9-25.repo"
-
-# Systemd modules-load.d file content for loading IPoIB interfaces:
-openstack_systemd_modules_load_ipoib: |
-  # Load the IP over IB module prior to running cloud-init --local.
-  ib_ipoib
-  # Load the Mellanox IB driver.
-  mlx4_ib
-
-# List of magnum cluster templates.
-openstack_container_clusters_templates:
-  - "{{ openstack_container_clusters_template_k8s_fedora_coreos }}"
-
-# Kubernetes magnum cluster template.
-openstack_container_clusters_template_k8s_fedora_coreos:
-  labels: "heat_container_agent_tag=ussuri-stable-1,kube_tag=v1.18.9,cloud_provider_tag=v1.18.2,monitoring_enabled=true,auto_scaling_enabled=true,auto_healing_enabled=true,auto_healing_controller=magnum-auto-healer,magnum_auto_healer_tag=latest,master_lb_floating_ip_enabled=true,cinder_csi_enabled=true,ingress_controller=octavia"
-  external-network: "{{ openstack_network_external.name }}"
-  master-flavor: "{{ openstack_flavor_m1_medium.name }}"
-  flavor: "{{ openstack_flavor_m1_medium.name }}"
-  image: "{{ openstack_image_fedora_coreos_32.name }}"
-  name: "k8s-fedora-coreos-32"
-  coe: "kubernetes"
-  network-driver: "calico"
-  docker-storage_driver: "overlay2"
-  volume-driver: "cinder"
-  server-type: "vm"
-  master-lb-enabled:
-  floating-ip-enabled:
-  public:
-  dns-nameserver: "8.8.8.8"
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+#openstack_container_clusters_templates:
