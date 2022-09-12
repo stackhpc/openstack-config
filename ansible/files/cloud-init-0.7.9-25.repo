@@ -1,0 +1,6 @@
+[cloud-init]
+name=cloud-init
+type=rpm-md
+baseurl=https://stackhpc.github.io/cloud-init-repo/
+gpgcheck=0
+enabled=1
