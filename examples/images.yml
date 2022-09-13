@@ -1,0 +1,40 @@
+---
+###############################################################################
+# Configuration of Glance software images.
+
+# List of Glance images. Format is as required by the stackhpc.os-images role.
+openstack_images:
+  - "{{ openstack_image_centos_stream8 }}"
+
+openstack_image_centos_stream8:
+  name: "CentOS-stream8"
+  type: raw
+  elements:
+    - "centos"
+    - "cloud-init"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "stable-interface-names"
+  is_public: True
+  env:
+    YUM: dnf
+    DIB_RELEASE: "8-stream"
+  properties:
+    os_type: "linux"
+    os_distro: "centos"
+    os_version: "8-stream"
+
+# List of Diskimage Builder (DIB) elements paths to include in image builds.
+openstack_image_elements:
+  - "{{ openstack_image_stackhpc_elements }}/elements"
+
+# This creates a git checkout in the local user's home directory
+openstack_image_stackhpc_elements: "{{ ansible_env.PWD }}/stackhpc-image-elements"
+
+# List of Diskimage Builder (DIB) elements Git repositories to use in image
+# builds.
+openstack_image_git_elements:
+  - repo: "https://github.com/stackhpc/stackhpc-image-elements.git"
+    local: "{{ openstack_image_stackhpc_elements }}"

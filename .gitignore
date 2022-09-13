@@ -109,3 +109,8 @@ ansible/*.retry
 ansible/roles/*\.*/
 # Galaxy collections
 ansible/collections/**/
+
+# Editors
+*~
+.*.swp
+.*sw?

@@ -1,0 +1,72 @@
+---
+###############################################################################
+# Configuration of OpenStack user environment for OpenStack.
+
+# List of OpenStack projects. Format is as required by the stackhpc.os-projects
+# role.
+openstack_projects:
+  - "{{ openstack_demo_project }}"
+
+# Definition of the openstack demo project. Format is as required by the
+# stackhpc.os-projects role.
+openstack_demo_project:
+  name: demo
+  description: OpenStack demo project
+  project_domain: default
+  user_domain: default
+  users: "{{ openstack_demo_users }}"
+  quotas: "{{ openstack_unlimited_quotas }}"
+
+# List of users in the openstack ResOps team. Format is as required by the
+# stackhpc.os-projects role.
+openstack_demo_users:
+  - name: alice
+    password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      <snip>
+    email: alice@example.com
+    roles: "{{ openstack_admin_roles }}"
+  - name: bob
+    password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      <snip>
+    email: bob@example.com
+    roles: "{{ openstack_user_roles }}"
+
+# List of roles to apply to admin users in the openstack demo project.
+openstack_admin_roles:
+  - admin
+  - heat_stack_owner
+  # This allows a user admin access to octavia APIs.
+  # https://docs.openstack.org/octavia/latest/configuration/policy.html
+  - load-balancer_admin
+
+# List of roles to apply to regular users in the openstack demo project.
+openstack_user_roles:
+  - member
+  - heat_stack_owner
+  # This allows a user read and write access to octavia APIs.
+  # https://docs.openstack.org/octavia/latest/configuration/policy.html
+  - load-balancer_member
+  # This allows a user read access to Barbican secrets.
+  # https://docs.openstack.org/barbican/latest/admin/access_control.html
+  - observer
+
+# Dict of quotas to set for projects with unlimited resource quotas
+openstack_unlimited_quotas:
+  backup_gigabytes: -1
+  backups: -1
+  cores: -1
+  fixed_ips: -1
+  floatingip: -1
+  gigabytes: -1
+  injected_file_size: -1
+  injected_files: -1
+  instances: -1
+  key_pairs: -1
+  per_volume_gigabytes: -1
+  ram: -1
+  security_group: -1
+  security_group_rule: -1
+  snapshots: -1
+  volumes: -1
