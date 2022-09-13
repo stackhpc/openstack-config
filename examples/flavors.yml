@@ -1,0 +1,43 @@
+---
+###############################################################################
+# Configuration of nova flavors for openstack.
+
+# List of nova flavors in the openstack demo project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors:
+  - "{{ openstack_flavor_m1_tiny }}"
+  - "{{ openstack_flavor_m1_small }}"
+  - "{{ openstack_flavor_m1_medium }}"
+  - "{{ openstack_flavor_m1_large }}"
+  - "{{ openstack_flavor_m1_xlarge }}"
+
+# Virtual machine flavors.
+openstack_flavor_m1_tiny:
+  name: "m1.tiny"
+  ram: 512
+  disk: 1
+  vcpus: 1
+
+openstack_flavor_m1_small:
+  name: "m1.small"
+  ram: 2048
+  disk: 20
+  vcpus: 1
+
+openstack_flavor_m1_medium:
+  name: "m1.medium"
+  ram: 4096
+  disk: 40
+  vcpus: 2
+
+openstack_flavor_m1_large:
+  name: "m1.large"
+  ram: 8192
+  disk: 40
+  vcpus: 4
+
+openstack_flavor_m1_xlarge:
+  name: "m1.xlarge"
+  ram: 16384
+  disk: 100
+  vcpus: 8

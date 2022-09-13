@@ -1,0 +1,150 @@
+---
+###############################################################################
+# Configuration of networks, subnets and routers for openstack.
+
+# List of networks in the openstack system. Format is as required by the
+# stackhpc.os-networks role.
+openstack_networks:
+  - "{{ openstack_network_internal }}"
+  - "{{ openstack_network_provision }}"
+  - "{{ openstack_network_cleaning }}"
+  - "{{ openstack_network_inspection }}"
+
+# openstack internal network name.
+openstack_network_internal_name: "internal"
+
+# openstack internal network.
+openstack_network_internal:
+  name: "{{ openstack_network_internal_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 65
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_internal }}"
+
+# openstack internal subnet.
+openstack_subnet_internal:
+  name: "{{ openstack_network_internal_name }}"
+  project: "admin"
+  cidr: "10.65.0.0/16"
+  enable_dhcp: false
+  allocation_pool_start: "10.65.0.2"
+  allocation_pool_end: "10.65.0.4"
+
+# openstack provision network name.
+openstack_network_provision_name: "provision-net"
+
+# openstack provision network.
+openstack_network_provision:
+  name: "{{ openstack_network_provision_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 69
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_provision }}"
+
+# openstack provision subnet.
+openstack_subnet_provision:
+  name: "{{ openstack_network_provision_name }}"
+  project: "admin"
+  cidr: "10.69.0.0/16"
+  enable_dhcp: false
+  allocation_pool_start: "10.69.0.1"
+  allocation_pool_end: "10.69.0.1"
+
+# openstack cleaning network name.
+openstack_network_cleaning_name: "cleaning-net"
+
+# openstack cleaning network.
+openstack_network_cleaning:
+  name: "{{ openstack_network_cleaning_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 70
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_cleaning }}"
+
+# openstack cleaning subnet.
+openstack_subnet_cleaning:
+  name: "{{ openstack_network_cleaning_name }}"
+  project: "admin"
+  cidr: "10.70.0.0/16"
+  enable_dhcp: false
+  allocation_pool_start: "10.70.0.1"
+  allocation_pool_end: "10.70.0.1"
+
+# openstack inspection network name.
+openstack_network_inspection_name: "inspection-net"
+
+# openstack inspection network.
+openstack_network_inspection:
+  name: "{{ openstack_network_inspection_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 71
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_inspection }}"
+
+# openstack inspection subnet.
+openstack_subnet_inspection:
+  name: "{{ openstack_network_inspection_name }}"
+  project: "admin"
+  cidr: "10.71.0.0/16"
+  enable_dhcp: false
+  allocation_pool_start: "10.71.0.1"
+  allocation_pool_end: "10.71.0.1"
+
+# List of routers in the openstack demo project. Format is as required by the
+# stackhpc.os-networks role.
+openstack_routers:
+  - "{{ openstack_router_provision }}"
+  - "{{ openstack_router_cleaning }}"
+  - "{{ openstack_router_inspection }}"
+
+# openstack bare metal provisioning router.
+openstack_router_provision:
+  - name: "provision"
+    project: "admin"
+    interfaces:
+      - net: "{{ openstack_network_internal_name }}"
+        subnet: "{{ openstack_network_internal_name }}"
+        portip: "10.65.0.2"
+      - net: "provision-net"
+        subnet: "provision-net"
+        portip: "10.69.0.1"
+
+# openstack bare metal cleaning router.
+openstack_router_cleaning:
+  - name: "cleaning"
+    project: "admin"
+    interfaces:
+      - net: "{{ openstack_network_internal_name }}"
+        subnet: "{{ openstack_network_internal_name }}"
+        portip: "10.65.0.3"
+      - net: "cleaning-net"
+        subnet: "cleaning-net"
+        portip: "10.70.0.1"
+
+# openstack bare metal inspection router.
+openstack_router_inspection:
+  - name: "inspection"
+    project: "admin"
+    interfaces:
+      - net: "{{ openstack_network_internal_name }}"
+        subnet: "{{ openstack_network_internal_name }}"
+        portip: "10.65.0.4"
+      - net: "inspection-net"
+        subnet: "inspection-net"
+        portip: "10.71.0.1"
