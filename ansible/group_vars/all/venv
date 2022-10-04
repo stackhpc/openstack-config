@@ -1,0 +1,3 @@
+---
+# Path to create virtualenv in which to install python dependencies.
+openstack_venv: "{{ ansible_env.PWD }}/openstack-config-venv"
