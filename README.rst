@@ -4,13 +4,7 @@ OpenStack Configuration
 
 This project contains Ansible playbooks and configuration of infrastructure on
 an existing OpenStack cloud for the OpenStack
-system.  This includes:
-
-* A demo project and user accounts in OpenStack keystone.
-* Compute node flavors in OpenStack nova for the various compute and storage
-  node types.
-* Networks, subnets and routers in OpenStack neutron for the external and
-  internal networks.
+system.
 
 Preparation
 ===========
