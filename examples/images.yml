@@ -2,6 +2,11 @@
 ###############################################################################
 # Configuration of Glance software images.
 
+# List of additional host packages.
+os_images_package_dependencies_extra:
+  # debootstrap is required to build ubuntu-minimal images.
+  - debootstrap
+
 # Drop cloud-init and stable-interface-names from default elements.
 os_images_common: enable-serial-console
 
