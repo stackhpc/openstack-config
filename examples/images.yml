@@ -61,6 +61,8 @@ openstack_image_rocky8:
     - vim-enhanced
   env:
     YUM: dnf
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_RUNTIME_ROOT: 1
     DIB_RELEASE: "8"
   properties:
     os_type: "linux"
