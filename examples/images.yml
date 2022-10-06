@@ -2,10 +2,24 @@
 ###############################################################################
 # Configuration of Glance software images.
 
+# List of additional host packages.
+os_images_package_dependencies_extra:
+  # debootstrap is required to build ubuntu-minimal images.
+  - debootstrap
+
+# Drop cloud-init and stable-interface-names from default elements.
+os_images_common: enable-serial-console
+
+# Set this to true to force rebuilding images.
+os_images_force_rebuild: false
+
 # List of Glance images. Format is as required by the stackhpc.os-images role.
 openstack_images:
   - "{{ openstack_image_centos_stream8 }}"
+  - "{{ openstack_image_rocky8 }}"
+  - "{{ openstack_image_ubuntu_focal }}"
 
+# CentOS Stream 8.
 openstack_image_centos_stream8:
   name: "CentOS-stream8"
   type: raw
@@ -25,16 +39,59 @@ openstack_image_centos_stream8:
     os_type: "linux"
     os_distro: "centos"
     os_version: "8-stream"
+    hw_rng_model: "virtio"
 
-# List of Diskimage Builder (DIB) elements paths to include in image builds.
-openstack_image_elements:
-  - "{{ openstack_image_stackhpc_elements }}/elements"
+# Rocky Linux 8.
+openstack_image_rocky8:
+  name: "Rocky8"
+  type: raw
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "stable-interface-names"
+    - "openssh-server"
+  is_public: True
+  packages:
+    - bash-completion
+    - vim-enhanced
+  env:
+    YUM: dnf
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_RUNTIME_ROOT: 1
+    DIB_RELEASE: "8"
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8"
+    hw_rng_model: "virtio"
 
-# This creates a git checkout in the local user's home directory
-openstack_image_stackhpc_elements: "{{ ansible_env.PWD }}/stackhpc-image-elements"
-
-# List of Diskimage Builder (DIB) elements Git repositories to use in image
-# builds.
-openstack_image_git_elements:
-  - repo: "https://github.com/stackhpc/stackhpc-image-elements.git"
-    local: "{{ openstack_image_stackhpc_elements }}"
+# Ubuntu Focal 20.04.
+openstack_image_ubuntu_focal:
+  name: "Ubuntu-20.04"
+  type: raw
+  is_public: True
+  elements:
+    - "cloud-init"
+    - "cloud-init-datasources"
+    - "dhcp-all-interfaces"
+    - "grub2"
+    - "openssh-server"
+    - "ubuntu-minimal"
+    - "vm"
+  packages:
+    - bash-completion
+    - debootstrap
+    - vim
+  properties:
+    os_type: "linux"
+    os_distro: "ubuntu"
+    os_version: "focal"
+    hw_rng_model: "virtio"
+  env:
+    DIB_RELEASE: "focal"
+    DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
