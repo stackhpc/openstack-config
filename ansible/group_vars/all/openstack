@@ -1,22 +1,56 @@
 ---
-# Configuration of OpenStack authentication variables.
+###############################################################################
+# Configuration of OpenStack user environment for OpenStack.
 
-# Cloud authentication type. This should be a string compatible with the
-# 'auth_type' argument of most 'os_*' Ansible modules.
-openstack_auth_type: "password"
+# List of OpenStack projects. Format is as required by the stackhpc.os-projects
+# role.
+openstack_projects: []
 
-# Cloud authentication parameters. This should be a dict providing items
-# compatible with the 'auth' argument of most 'os_*' Ansible modules.
-# By default we pull these from the environment of the shell executing Ansible.
-openstack_auth:
-  project_domain_id: "{{ lookup('env', 'OS_PROJECT_DOMAIN_ID') }}"
-  user_domain_id: "{{ lookup('env', 'OS_USER_DOMAIN_ID') }}"
-  project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
-  user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
-  project_id: "{{ lookup('env', 'OS_PROJECT_ID') }}"
-  project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-  username: "{{ lookup('env', 'OS_USERNAME') }}"
-  password: "{{ lookup('env', 'OS_PASSWORD') }}"
-  auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+###############################################################################
+# Configuration of networks, subnets and routers for OpenStack.
 
-openstack_cacert: "{{ lookup('env', 'OS_CACERT') }}"
+# List of networks in the openstack project. Format is as required by the
+# stackhpc.os-networks role.
+openstack_networks: []
+
+# List of routers in the openstack project. Format is as required by the
+# stackhpc.os-networks role.
+openstack_routers: []
+
+# List of security groups in the openstack demo project. Format is as required by the
+# stackhpc.os-networks role.
+openstack_security_groups: []
+
+###############################################################################
+# Configuration of nova flavors for OpenStack.
+
+# List of nova flavors in the openstack project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors: []
+
+###############################################################################
+# Configuration of glance images for OpenStack.
+
+# List of glance images in the openstack project. Format is as required by the
+# stackhpc.os-images role.
+openstack_images: []
+
+# List of additional diskimage-builder elements to incorporate on the path
+openstack_image_elements: []
+
+# List of diskimage-builder element git repos to pull
+openstack_image_git_elements: []
+
+###############################################################################
+# Configuration of nova host aggregates for OpenStack.
+
+# List of host aggregates in the openstack project.
+# Format is as required by the stackhpc.os_host_aggregates role.
+openstack_host_aggregates: []
+
+###############################################################################
+# Configuration of container clusters templates for OpenStack.
+
+# List of clusters templates in the openstack project. Format is as required by the
+# stackhpc.os-container-clusters role.
+openstack_container_clusters_templates: []

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SCRIPT=${BASH_SOURCE[0]}
 TOOLS_PATH=$(dirname ${SCRIPT})
