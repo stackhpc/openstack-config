@@ -32,6 +32,12 @@ Install Ansible role and collection dependencies from Ansible Galaxy:
        -p ansible/collections \
        -r requirements.yml
 
+Configuration
+=============
+
+Configuration should be added to ``etc/openstack-config/openstack-config.yml``.
+Examples are provided in the ``examples`` directory.
+
 Usage
 =====
 
