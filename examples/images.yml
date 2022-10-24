@@ -25,6 +25,8 @@ openstack_image_centos_stream8:
   name: "CentOS-stream8"
   type: raw
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "centos"
     - "cloud-init"
     - "selinux-permissive"
@@ -36,6 +38,11 @@ openstack_image_centos_stream8:
   env:
     YUM: dnf
     DIB_RELEASE: "8-stream"
+  packages:
+    # Next 3 are required for UEFI mode:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
   properties:
     os_type: "linux"
     os_distro: "centos"
@@ -60,6 +67,8 @@ openstack_image_rocky8:
   name: "Rocky8"
   type: raw
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "rocky-container"
     - "cloud-init"
     - "epel"
@@ -71,8 +80,12 @@ openstack_image_rocky8:
     - "openssh-server"
   is_public: True
   packages:
-    - bash-completion
-    - vim-enhanced
+    - "bash-completion"
+    - "vim-enhanced"
+    # Next 3 are required for UEFI mode:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
   env:
     YUM: dnf
     DIB_CONTAINERFILE_RUNTIME: docker
@@ -90,6 +103,8 @@ openstack_image_ubuntu_focal:
   type: raw
   is_public: True
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "cloud-init"
     - "cloud-init-datasources"
     - "dhcp-all-interfaces"
