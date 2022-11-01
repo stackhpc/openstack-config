@@ -1,14 +1,71 @@
 ---
 ###############################################################################
+# Configuration of nova flavors for openstack.
+
+# List of nova flavors in the openstack demo project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors:
+  - "{{ openstack_flavor_m1_tiny }}"
+  - "{{ openstack_flavor_m1_small }}"
+  - "{{ openstack_flavor_m1_medium }}"
+  - "{{ openstack_flavor_m1_large }}"
+  - "{{ openstack_flavor_m1_xlarge }}"
+
+# Virtual machine flavors.
+openstack_flavor_m1_tiny:
+  name: "m1.tiny"
+  ram: 512
+  disk: 1
+  vcpus: 1
+
+openstack_flavor_m1_small:
+  name: "m1.small"
+  ram: 2048
+  disk: 20
+  vcpus: 1
+
+openstack_flavor_m1_medium:
+  name: "m1.medium"
+  ram: 4096
+  disk: 40
+  vcpus: 2
+
+openstack_flavor_m1_large:
+  name: "m1.large"
+  ram: 8192
+  disk: 40
+  vcpus: 4
+
+openstack_flavor_m1_xlarge:
+  name: "m1.xlarge"
+  ram: 16384
+  disk: 100
+  vcpus: 8
+
+openstack_images:
+  - "{{ openstack_image_cirros_0_6_0 }}"
+
+openstack_image_cirros_0_6_0:
+  name: "cirros"
+  type: qcow2
+  image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
+  is_public: True
+  properties:
+    os_type: "linux"
+    os_distro: "cirros"
+    os_version: "0.6.0"
+    hw_rng_model: "virtio"
+
+###############################################################################
 # Configuration of networks, subnets and routers for openstack.
 
 # List of networks in the openstack system. Format is as required by the
 # stackhpc.os-networks role.
 openstack_networks:
   - "{{ openstack_network_external }}"
-  - "{{ openstack_network_demo_vxlan }}"
-  - "{{ openstack_network_demo_vlan }}"
-  - "{{ openstack_network_demo_provider }}"
+  - "{{ openstack_network_admin_vxlan }}"
+  - "{{ openstack_network_admin_vlan }}"
+  - "{{ openstack_network_admin_provider }}"
 
 # openstack external network name.
 openstack_network_external_name: "external"
@@ -35,99 +92,96 @@ openstack_subnet_external:
   allocation_pool_start: "192.168.38.129"
   allocation_pool_end: "192.168.38.254"
 
-# openstack demo VXLAN network name.
-openstack_network_demo_vxlan_name: "demo-vxlan"
+# openstack admin VXLAN network name.
+openstack_network_admin_vxlan_name: "admin-vxlan"
 
-# openstack demo VXLAN network.
-openstack_network_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
-  project: demo
+# openstack admin VXLAN network.
+openstack_network_admin_vxlan:
+  name: "{{ openstack_network_admin_vxlan_name }}"
+  project: admin
   provider_network_type: "vxlan"
   shared: false
   # Subnet configuration.
   subnets:
-    - "{{ openstack_subnet_demo_vxlan }}"
+    - "{{ openstack_subnet_admin_vxlan }}"
 
-# openstack demo VXLAN subnet.
-openstack_subnet_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
-  project: demo
+# openstack admin VXLAN subnet.
+openstack_subnet_admin_vxlan:
+  name: "{{ openstack_network_admin_vxlan_name }}"
+  project: admin
   cidr: "10.1.0.0/24"
   gateway_ip: "10.1.0.1"
   allocation_pool_start: "10.1.0.2"
   allocation_pool_end: "10.1.0.254"
 
-# openstack demo VLAN network name.
-openstack_network_demo_vlan_name: "demo-vlan"
+# openstack admin VLAN network name.
+openstack_network_admin_vlan_name: "admin-vlan"
 
-# openstack demo VLAN network.
-openstack_network_demo_vlan:
-  name: "{{ openstack_network_demo_vlan_name }}"
-  project: demo
+# openstack admin VLAN network.
+openstack_network_admin_vlan:
+  name: "{{ openstack_network_admin_vlan_name }}"
+  project: admin
   provider_network_type: "vlan"
   provider_physical_network: "physnet1"
   shared: false
   # Subnet configuration.
   subnets:
-    - "{{ openstack_subnet_demo_vlan }}"
+    - "{{ openstack_subnet_admin_vlan }}"
 
-# openstack demo VLAN subnet.
-openstack_subnet_demo_vlan:
-  name: "{{ openstack_network_demo_vlan_name }}"
-  project: demo
+# openstack admin VLAN subnet.
+openstack_subnet_admin_vlan:
+  name: "{{ openstack_network_admin_vlan_name }}"
+  project: admin
   cidr: "10.0.0.0/24"
   gateway_ip: "10.0.0.1"
   allocation_pool_start: "10.0.0.2"
   allocation_pool_end: "10.0.0.254"
 
-# openstack demo provider VLAN network name.
-openstack_network_demo_provider_name: "demo-provider"
+# openstack admin provider VLAN network name.
+openstack_network_admin_provider_name: "admin-provider"
 
-# openstack demo provider VLAN
-openstack_network_demo_provider:
-  name: "{{ openstack_network_demo_provider_name }}"
-  project: demo
+# openstack admin provider VLAN
+openstack_network_admin_provider:
+  name: "{{ openstack_network_admin_provider_name }}"
+  project: admin
   provider_network_type: "vlan"
   provider_physical_network: "physnet1"
   provider_segmentation_id: 100
   shared: false
   # Subnet configuration.
   subnets:
-    - "{{ openstack_subnet_demo_provider }}"
+    - "{{ openstack_subnet_admin_provider }}"
 
-# openstack demo provider VLAN subnet
-openstack_subnet_demo_provider:
-  name: "{{ openstack_network_demo_provider_name }}"
-  project: demo
+# openstack admin provider VLAN subnet
+openstack_subnet_admin_provider:
+  name: "{{ openstack_network_admin_provider_name }}"
+  project: admin
   cidr: "10.100.0.0/16"
   gateway_ip: "10.100.0.1"
   allocation_pool_start: "10.100.1.0"
   allocation_pool_end: "10.100.99.255"
-  host_routes:
-    - destination: "10.66.0.0/16"
-      nexthop: "10.100.0.2"
 
-# List of routers in the openstack demo project. Format is as required by the
+# List of routers in the openstack admin project. Format is as required by the
 # stackhpc.os-networks role.
 openstack_routers:
-  - "{{ openstack_router_demo }}"
+  - "{{ openstack_router_admin }}"
 
-# openstack demo router.
-openstack_router_demo:
-  - name: demo
-    project: demo
+# openstack admin router.
+openstack_router_admin:
+  - name: admin
+    project: admin
     interfaces:
-      - "{{ openstack_network_demo_vlan_name }}"
-      - "{{ openstack_network_demo_vxlan_name }}"
-      - "{{ openstack_network_demo_provider_name }}"
+      - "{{ openstack_network_admin_vlan_name }}"
+      - "{{ openstack_network_admin_vxlan_name }}"
+      - "{{ openstack_network_admin_provider_name }}"
     network: "{{ openstack_network_external_name }}"
 
-# List of security groups in the openstack demo project.
+# List of security groups in the openstack admin project.
 # Format is as required by the stackhpc.os-networks role.
 openstack_security_groups:
-  # Default security group for the openstack demo project.
+  # Default security group for the openstack admin project.
   - name: default
-    project: demo
+    project: admin
     rules:
       # Allow ICMP (for ping, etc.).
       - protocol: icmp
@@ -135,3 +189,4 @@ openstack_security_groups:
       - protocol: tcp
         port_range_min: 22
         port_range_max: 22
+
