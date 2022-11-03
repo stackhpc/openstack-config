@@ -1,60 +1,192 @@
 ---
 ###############################################################################
-# Configuration of OpenStack projects and users user environment.
+# Configuration of nova flavors for openstack.
 
-# List of OpenStack projects. Format is as required by the stackhpc.os-projects
-# role.
-#openstack_projects:
+# List of nova flavors in the openstack demo project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors:
+  - "{{ openstack_flavor_m1_tiny }}"
+  - "{{ openstack_flavor_m1_small }}"
+  - "{{ openstack_flavor_m1_medium }}"
+  - "{{ openstack_flavor_m1_large }}"
+  - "{{ openstack_flavor_m1_xlarge }}"
+
+# Virtual machine flavors.
+openstack_flavor_m1_tiny:
+  name: "m1.tiny"
+  ram: 512
+  disk: 1
+  vcpus: 1
+
+openstack_flavor_m1_small:
+  name: "m1.small"
+  ram: 2048
+  disk: 20
+  vcpus: 1
+
+openstack_flavor_m1_medium:
+  name: "m1.medium"
+  ram: 4096
+  disk: 40
+  vcpus: 2
+
+openstack_flavor_m1_large:
+  name: "m1.large"
+  ram: 8192
+  disk: 40
+  vcpus: 4
+
+openstack_flavor_m1_xlarge:
+  name: "m1.xlarge"
+  ram: 16384
+  disk: 100
+  vcpus: 8
+
+openstack_images:
+  - "{{ openstack_image_cirros_0_6_0 }}"
+
+openstack_image_cirros_0_6_0:
+  name: "cirros"
+  type: qcow2
+  image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
+  is_public: True
+  properties:
+    os_type: "linux"
+    os_distro: "cirros"
+    os_version: "0.6.0"
+    hw_rng_model: "virtio"
 
 ###############################################################################
-# Configuration of networks, subnets and routers.
+# Configuration of networks, subnets and routers for openstack.
 
 # List of networks in the openstack system. Format is as required by the
 # stackhpc.os-networks role.
-#openstack_networks:
+openstack_networks:
+  - "{{ openstack_network_external }}"
+  - "{{ openstack_network_admin_vxlan }}"
+  - "{{ openstack_network_admin_vlan }}"
+  - "{{ openstack_network_admin_provider }}"
 
-# List of routers in the openstack project. Format is as required by the
+# openstack external network name.
+openstack_network_external_name: "external"
+
+# openstack external network.
+openstack_network_external:
+  name: "{{ openstack_network_external_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 102
+  shared: true
+  external: true
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_external }}"
+
+# openstack external subnet.
+openstack_subnet_external:
+  name: "{{ openstack_network_external_name }}"
+  project: "admin"
+  cidr: "192.168.38.0/24"
+  no_gateway_ip: true
+  allocation_pool_start: "192.168.38.129"
+  allocation_pool_end: "192.168.38.254"
+
+# openstack admin VXLAN network name.
+openstack_network_admin_vxlan_name: "admin-vxlan"
+
+# openstack admin VXLAN network.
+openstack_network_admin_vxlan:
+  name: "{{ openstack_network_admin_vxlan_name }}"
+  project: admin
+  provider_network_type: "vxlan"
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_admin_vxlan }}"
+
+# openstack admin VXLAN subnet.
+openstack_subnet_admin_vxlan:
+  name: "{{ openstack_network_admin_vxlan_name }}"
+  project: admin
+  cidr: "10.1.0.0/24"
+  gateway_ip: "10.1.0.1"
+  allocation_pool_start: "10.1.0.2"
+  allocation_pool_end: "10.1.0.254"
+
+# openstack admin VLAN network name.
+openstack_network_admin_vlan_name: "admin-vlan"
+
+# openstack admin VLAN network.
+openstack_network_admin_vlan:
+  name: "{{ openstack_network_admin_vlan_name }}"
+  project: admin
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_admin_vlan }}"
+
+# openstack admin VLAN subnet.
+openstack_subnet_admin_vlan:
+  name: "{{ openstack_network_admin_vlan_name }}"
+  project: admin
+  cidr: "10.0.0.0/24"
+  gateway_ip: "10.0.0.1"
+  allocation_pool_start: "10.0.0.2"
+  allocation_pool_end: "10.0.0.254"
+
+# openstack admin provider VLAN network name.
+openstack_network_admin_provider_name: "admin-provider"
+
+# openstack admin provider VLAN
+openstack_network_admin_provider:
+  name: "{{ openstack_network_admin_provider_name }}"
+  project: admin
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 100
+  shared: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_admin_provider }}"
+
+# openstack admin provider VLAN subnet
+openstack_subnet_admin_provider:
+  name: "{{ openstack_network_admin_provider_name }}"
+  project: admin
+  cidr: "10.100.0.0/16"
+  gateway_ip: "10.100.0.1"
+  allocation_pool_start: "10.100.1.0"
+  allocation_pool_end: "10.100.99.255"
+
+# List of routers in the openstack admin project. Format is as required by the
 # stackhpc.os-networks role.
-#openstack_routers:
+openstack_routers:
+  - "{{ openstack_router_admin }}"
 
-# List of security groups in the openstack project.
+# openstack admin router.
+openstack_router_admin:
+  - name: admin
+    project: admin
+    interfaces:
+      - "{{ openstack_network_admin_vlan_name }}"
+      - "{{ openstack_network_admin_vxlan_name }}"
+      - "{{ openstack_network_admin_provider_name }}"
+    network: "{{ openstack_network_external_name }}"
+
+# List of security groups in the openstack admin project.
 # Format is as required by the stackhpc.os-networks role.
-#openstack_security_groups:
+openstack_security_groups:
+  # Default security group for the openstack admin project.
+  - name: default
+    project: admin
+    rules:
+      # Allow ICMP (for ping, etc.).
+      - protocol: icmp
+      # Allow SSH.
+      - protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
 
-###############################################################################
-# Configuration of nova flavors.
-
-# List of nova flavors in the openstack project. Format is as required by the
-# stackhpc.os-flavors role.
-#openstack_flavors:
-
-###############################################################################
-# Configuration of nova host aggregates.
-
-# List of nova host aggregates. Format is as required by the
-# stackhpc.os_host_aggregates role.
-#openstack_host_aggregates:
-
-###############################################################################
-# Configuration of Glance software images.
-
-# List of Glance images. Format is as required by the stackhpc.os-images role.
-#openstack_images:
-
-# List of Diskimage Builder (DIB) elements paths to include in image builds.
-#openstack_image_elements:
-
-# List of Diskimage Builder (DIB) elements Git repositories to use in image
-# builds.
-#openstack_image_git_elements:
-
-###############################################################################
-# Configuration of Magnum container clusters.
-
-# List of magnum cluster templates. Format is as required by the
-# stackhpc.os-container-clusters role.
-#openstack_container_clusters_templates:
-
-###############################################################################
-# Dummy variable to allow Ansible to accept this file.
-workaround_ansible_issue_8743: yes
