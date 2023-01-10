@@ -63,7 +63,7 @@ openstack_image_cirros_0_6_0:
 # stackhpc.os-networks role.
 openstack_networks:
   - "{{ openstack_network_external }}"
-  - "{{ openstack_network_admin_vxlan }}"
+  - "{{ openstack_network_admin_tenant }}"
   - "{{ openstack_network_admin_vlan }}"
   - "{{ openstack_network_admin_provider }}"
 
@@ -92,22 +92,21 @@ openstack_subnet_external:
   allocation_pool_start: "192.168.38.129"
   allocation_pool_end: "192.168.38.254"
 
-# openstack admin VXLAN network name.
-openstack_network_admin_vxlan_name: "admin-vxlan"
+# openstack admin tenant network name.
+openstack_network_admin_tenant_name: "admin-tenant"
 
-# openstack admin VXLAN network.
-openstack_network_admin_vxlan:
-  name: "{{ openstack_network_admin_vxlan_name }}"
+# openstack admin tenant network.
+openstack_network_admin_tenant:
+  name: "{{ openstack_network_admin_tenant_name }}"
   project: admin
-  provider_network_type: "vxlan"
   shared: false
   # Subnet configuration.
   subnets:
-    - "{{ openstack_subnet_admin_vxlan }}"
+    - "{{ openstack_subnet_admin_tenant }}"
 
-# openstack admin VXLAN subnet.
-openstack_subnet_admin_vxlan:
-  name: "{{ openstack_network_admin_vxlan_name }}"
+# openstack admin tenant subnet.
+openstack_subnet_admin_tenant:
+  name: "{{ openstack_network_admin_tenant_name }}"
   project: admin
   cidr: "10.1.0.0/24"
   gateway_ip: "10.1.0.1"
@@ -172,7 +171,7 @@ openstack_router_admin:
     project: admin
     interfaces:
       - "{{ openstack_network_admin_vlan_name }}"
-      - "{{ openstack_network_admin_vxlan_name }}"
+      - "{{ openstack_network_admin_tenant_name }}"
       - "{{ openstack_network_admin_provider_name }}"
     network: "{{ openstack_network_external_name }}"
 
