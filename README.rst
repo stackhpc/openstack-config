@@ -3,8 +3,8 @@ OpenStack Configuration
 =============================================
 
 This project contains Ansible playbooks and configuration of infrastructure on
-an existing OpenStack cloud for the OpenStack
-system.
+an existing OpenStack cloud for the OpenStack system. (Supported up to Yoga
+release.)
 
 Preparation
 ===========
