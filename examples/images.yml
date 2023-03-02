@@ -16,6 +16,7 @@ os_images_force_rebuild: false
 # List of Glance images. Format is as required by the stackhpc.os-images role.
 openstack_images:
   - "{{ openstack_image_centos_stream8 }}"
+  - "{{ openstack_image_cirros_0_6_0 }}"
   - "{{ openstack_image_rocky8 }}"
   - "{{ openstack_image_ubuntu_focal }}"
 
@@ -24,6 +25,8 @@ openstack_image_centos_stream8:
   name: "CentOS-stream8"
   type: raw
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "centos"
     - "cloud-init"
     - "selinux-permissive"
@@ -35,10 +38,28 @@ openstack_image_centos_stream8:
   env:
     YUM: dnf
     DIB_RELEASE: "8-stream"
+  packages:
+    # Next 3 are required for UEFI mode:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
   properties:
     os_type: "linux"
     os_distro: "centos"
     os_version: "8-stream"
+    hw_rng_model: "virtio"
+
+# Cirros 0.6.0
+openstack_image_cirros_0_6_0:
+  name: "cirros-0.6.0"
+  type: qcow2
+  image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
+  checksum: "md5:f4027b89e99e238184e13089a3155b74"
+  is_public: True
+  properties:
+    os_type: "linux"
+    os_distro: "cirros"
+    os_version: "0.6.0"
     hw_rng_model: "virtio"
 
 # Rocky Linux 8.
@@ -46,6 +67,8 @@ openstack_image_rocky8:
   name: "Rocky8"
   type: raw
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "rocky-container"
     - "cloud-init"
     - "epel"
@@ -57,8 +80,12 @@ openstack_image_rocky8:
     - "openssh-server"
   is_public: True
   packages:
-    - bash-completion
-    - vim-enhanced
+    - "bash-completion"
+    - "vim-enhanced"
+    # Next 3 are required for UEFI mode:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
   env:
     YUM: dnf
     DIB_CONTAINERFILE_RUNTIME: docker
@@ -76,6 +103,8 @@ openstack_image_ubuntu_focal:
   type: raw
   is_public: True
   elements:
+    # Required for UEFI mode:
+    - "block-device-efi"
     - "cloud-init"
     - "cloud-init-datasources"
     - "dhcp-all-interfaces"
