@@ -1,0 +1,36 @@
+###############################################################################
+# Configuration of Magnum container clusters.
+
+{% for item in new_template_data %}
+{{ item.key }}:
+  labels:
+    monitoring_enabled: "true"
+    kube_dashboard_enabled: "true"
+    capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
+    octavia_provider: {{ magnum_loadbalancer_provider }}
+  external_network_id: {{ magnum_external_net_name }}
+  master_flavor: {{ magnum_flavor_name }}
+  flavor: {{ magnum_flavor_name }}
+  image: "{{ item.value.name }}"
+  name: "{{ item.key }}"
+  coe: "kubernetes"
+  network_driver: "calico"
+  master_lb_enabled: True
+  floating_ip_enabled: True
+  dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
+  public: True
+
+{% endfor %}
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+openstack_container_clusters_templates:
+{% if matching_temps is defined and matching_temps | length > 0 %}
+{% for item in matching_temps %}
+{% if item.key not in new_template_data | map(attribute='key') %}
+  - "{{ '{{ ' + item.key + ' }}' }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+{% for item in new_template_data %}
+  - "{{ '{{ ' + item.key + ' }}' }}"
+{% endfor %}

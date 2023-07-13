@@ -1,0 +1,117 @@
+###############################################################################
+# Configuration of Glance software images.
+
+# Flavor must have a minimum of 2 VCPUs
+magnum_flavor: "m1.small"
+
+# Network to create tenant cluster FIPs on 
+magnum_external_network: "external"
+
+# Provider for cluster loadbalancers
+magnum_octavia_provider: "ovn"
+
+# helm chart version to use for tenant clusters
+magnum_helm_chart_version: "openstack-cluster-0.1.1-dev.0.main.221"
+
+ubuntu-focal-kube-v1_25_11:
+  name: "ubuntu-focal-kube-v1.25.11"
+  type: qcow2
+  image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.25.11-230712-0939.qcow2"
+  is_public: True
+  properties:
+    os_distro: "ubuntu"
+    os_version: "20.04"
+    kube_version: "v1.25.11"
+
+ubuntu-focal-kube-v1_26_6:
+  name: "ubuntu-focal-kube-v1.26.6"
+  type: qcow2
+  image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.26.6-230712-1010.qcow2"
+  is_public: True
+  properties:
+    os_distro: "ubuntu"
+    os_version: "20.04"
+    kube_version: "v1.26.6"
+
+ubuntu-focal-kube-v1_27_3:
+  name: "ubuntu-focal-kube-v1.27.3"
+  type: qcow2
+  image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.27.3-230712-1021.qcow2"
+  is_public: True
+  properties:
+    os_distro: "ubuntu"
+    os_version: "20.04"
+    kube_version: "v1.27.3"
+
+# List of Glance images. Format is as required by the stackhpc.os-images role.
+openstack_images:
+  - "{{ ubuntu-focal-kube-v1_25_11 }}"
+  - "{{ ubuntu-focal-kube-v1_26_6 }}"
+  - "{{ ubuntu-focal-kube-v1_27_3 }}"
+
+###############################################################################
+# Configuration of Magnum container clusters.
+
+kube_v1_25_11:
+  labels:
+    monitoring_enabled: "false"
+    kube_dashboard_enabled: "true"
+    capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
+    octavia_provider: "{{ magnum_octavia_provider }}"
+  external_network_id: "{{ magnum_external_network }}"
+  master_flavor: "{{ magnum_flavor }}"
+  flavor: "{{ magnum_flavor }}"
+  image: "ubuntu-focal-kube-v1.25.11"
+  name: "kubernetes-v1.25.11"
+  coe: "kubernetes"
+  network_driver: "calico"
+  master_lb_enabled: True
+  floating_ip_enabled: True
+  # Magnum’s default value for dns_nameserver is 8.8.8.8.
+  dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
+  public: True
+
+kube_v1_26_6:
+  labels:
+    monitoring_enabled: "false"
+    kube_dashboard_enabled: "true"
+    capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
+    octavia_provider: "{{ magnum_octavia_provider }}"
+  external_network_id: "{{ magnum_external_network }}"
+  master_flavor: "{{ magnum_flavor }}"
+  flavor: "{{ magnum_flavor }}"
+  image: "ubuntu-focal-kube-v1.26.6"
+  name: "kubernetes-v1.26.6"
+  coe: "kubernetes"
+  network_driver: "calico"
+  master_lb_enabled: True
+  floating_ip_enabled: True
+  # Magnum’s default value for dns_nameserver is 8.8.8.8.
+  dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
+  public: True
+
+kube_v1_27_3:
+  labels:
+    monitoring_enabled: "false"
+    kube_dashboard_enabled: "true"
+    capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
+    octavia_provider: "{{ magnum_octavia_provider }}"
+  external_network_id: "{{ magnum_external_network }}"
+  master_flavor: "{{ magnum_flavor }}"
+  flavor: "{{ magnum_flavor}}"
+  image: "ubuntu-focal-kube-v1.27.3"
+  name: "kubernetes-v1.27.3"
+  coe: "kubernetes"
+  network_driver: "calico"
+  master_lb_enabled: True
+  floating_ip_enabled: True
+  # Magnum’s default value for dns_nameserver is 8.8.8.8.
+  dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
+  public: True
+
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+openstack_container_clusters_templates:
+  - "{{ kube_v1_25_11 }}"
+  - "{{ kube_v1_26_6 }}"
+  - "{{ kube_v1_27_3 }}"

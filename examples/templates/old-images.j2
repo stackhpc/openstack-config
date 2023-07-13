@@ -1,0 +1,21 @@
+{% if matching_images is defined and matching_temps | length > 0 %}
+###############################################################################
+# Old magnum images - hide until out of use
+
+{% for item in matching_images %}
+{% if item.value.name not in new_template_data | map(attribute='value.name') %}
+{{ item.key }}:
+{% for key, value in item.value.items() %}
+{% if value is mapping %}
+  {{ key }}:
+{% for k, v in value.items() %}
+    {{ k }}: "{{ v }}"
+{% endfor %}
+{% else %}
+  {{ key }}: "{{ value }}"
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}

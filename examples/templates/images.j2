@@ -1,0 +1,28 @@
+###############################################################################
+# Configuration of Glance software images.
+
+{% for item in new_template_data %}
+# Image for {{ item.key }}
+{{ item.value.name }}:
+  name: "{{ item.value.name }}"
+  type: qcow2
+  image_url: "{{ item.value.url }}"
+  is_public: True
+  properties:
+    os_distro: "ubuntu"
+    os_version: "20.04"
+    kube_version: "{{ item.value.kubernetes_version }}"
+
+{% endfor %}
+# List of Kubernetes images. Format is as required by the stackhpc.os-images role.
+kubernetes_images:
+{% if matching_images is defined and matching_temps | length > 0 %}
+{% for item in matching_images %}
+{% if item.value.name not in new_template_data | map(attribute='value.name') %}
+  - "{{ '{{ ' + item.key + ' }}' }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+{% for item in new_template_data %}
+  - "{{ '{{ ' + item.value.name + ' }}' }}"
+{% endfor %}

@@ -39,8 +39,10 @@
 # Configuration of Glance software images.
 
 # List of Glance images. Format is as required by the stackhpc.os-images role.
-#openstack_images:
+#glance_images:
 
+# Images to be uploaded 
+#openstack_images: "{{ glance_images + kubernetes_images }}"
 # List of Diskimage Builder (DIB) elements paths to include in image builds.
 #openstack_image_elements:
 

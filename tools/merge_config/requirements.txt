@@ -1,0 +1,4 @@
+jmespath
+python-openstackclient
+python-octaviaclient
+munch
