@@ -4,29 +4,227 @@
 
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
-#openstack_projects:
+openstack_projects:
+  - "{{ openstack_project_stackhpc }}"
+
+# Definition of the openstack demo project. Format is as required by the
+# stackhpc.os-projects role.
+openstack_project_stackhpc:
+  name: "stackhpc"
+  description: "StackHPC demo project"
+  project_domain: "default"
+  user_domain: "default"
+  users: "{{ openstack_stackhpc_users }}"
+  quotas: "{{ openstack_project_quotas }}"
+
+# StackHPC project users and roles
+openstack_stackhpc_users:
+  - name: "stackhpc-dmehmood"
+    description: "Dawud Mehmood (StackHPC)"
+    email: "dawud@stackhpc.com"
+    password: "placeholder"
+    roles: "{{ openstack_user_roles }}"
+  - name: "stackhpc-mcrees"
+    description: "Matt Crees (StackHPC)"
+    email: "mattc@stackhpc.com"
+    password: "placeholder"
+    roles: "{{ openstack_user_roles }}"
+  - name: "stackhpc-stelfer"
+    description: "Stig Telfer (StackHPC)"
+    email: "stig@stackhpc.com"
+    password: "placeholder"
+    roles: "{{ openstack_user_roles }}"
+  - name: "stackhpc-sdavidson"
+    description: "Scott Davidson (StackHPC)"
+    email: "scott@stackhpc.com"
+    password: "placeholder"
+    roles: "{{ openstack_user_roles }}"
+
+# List of roles to apply to regular users in the openstack demo project.
+openstack_user_roles:
+  - member
+  - heat_stack_owner
+  # This allows a user read and write access to octavia APIs.
+  # https://docs.openstack.org/octavia/latest/configuration/policy.html
+  - load-balancer_member
+  # This allows a user read access to Barbican secrets.
+  # https://docs.openstack.org/barbican/latest/admin/access_control.html
+  - observer
+
+# Dict of quotas to set for projects with basic resource quotas
+openstack_project_quotas:
+  backup_gigabytes: -1
+  backups: -1
+  cores: 250
+  fixed_ips: 10
+  floatingip: 10
+  gigabytes: 10000
+  injected_file_size: -1
+  injected_files: -1
+  instances: 20
+  key_pairs: 10
+  per_volume_gigabytes: 500
+  ram: 1000000
+  security_group: 10
+  security_group_rule: 100
+  snapshots: -1
+  volumes: 50
+
+# Dict of quotas to set for projects with unlimited resource quotas
+openstack_unlimited_quotas:
+  backup_gigabytes: -1
+  backups: -1
+  cores: -1
+  fixed_ips: -1
+  floatingip: -1
+  gigabytes: -1
+  injected_file_size: -1
+  injected_files: -1
+  instances: -1
+  key_pairs: -1
+  per_volume_gigabytes: -1
+  ram: -1
+  security_group: -1
+  security_group_rule: -1
+  snapshots: -1
+  volumes: -1
 
 ###############################################################################
 # Configuration of networks, subnets and routers.
 
 # List of networks in the openstack system. Format is as required by the
 # stackhpc.os-networks role.
-#openstack_networks:
+openstack_networks:
+  - "{{ openstack_network_external_internet }}"
+  - "{{ openstack_network_stackhpc }}"
+  - "{{ openstack_network_stackhpc_vlan }}"
+
+#
+# External/Internet network
+# Actually still a private subnet range but intended for outward-facing
+# networking.
+#
+openstack_network_external_internet_name: "external"
+
+openstack_network_external_internet:
+  name: "{{ openstack_network_external_internet_name }}"
+  project: "admin"
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet1"
+  provider_segmentation_id: 2803
+  shared: false
+  external: true
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_external_internet }}"
+
+openstack_subnet_external_internet:
+  name: "{{ openstack_network_external_internet_name }}"
+  project: "admin"
+  cidr: "10.129.30.0/23"
+  gateway_ip: "10.129.31.254"
+  allocation_pool_start: "10.129.30.20"
+  allocation_pool_end: "10.129.31.240"
 
 # List of routers in the openstack project. Format is as required by the
 # stackhpc.os-networks role.
-#openstack_routers:
+openstack_routers:
+  - "{{ openstack_router_stackhpc }}"
 
 # List of security groups in the openstack project.
 # Format is as required by the stackhpc.os-networks role.
-#openstack_security_groups:
+openstack_security_groups:
+  - "{{ openstack_secgroup_stackhpc }}"
+
+# Default security group rule settings for a project
+openstack_secgroup_rules_default:
+  # Allow ICMP (for ping, etc.).
+  - ethertype: IPv4
+    protocol: icmp
+  # Allow SSH.
+  - ethertype: IPv4
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+
+################################################################################
+# Networks for stackhpc
+#
+openstack_network_stackhpc:
+  name: "{{ openstack_project_stackhpc.name }}"
+  project: "{{ openstack_project_stackhpc.name }}"
+  shared: false
+  external: false
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_stackhpc }}"
+
+openstack_subnet_stackhpc:
+  name: "{{ openstack_project_stackhpc.name }}"
+  project: "{{ openstack_project_stackhpc.name }}"
+  cidr: "192.168.0.0/24"
+  gateway_ip: "192.168.0.1"
+  allocation_pool_start: "192.168.0.10"
+  allocation_pool_end: "192.168.0.250"
+
+openstack_network_stackhpc_vlan:
+  name: "{{ openstack_project_stackhpc.name }}-vlan"
+  project: "{{ openstack_project_stackhpc.name }}"
+  shared: false
+  external: false
+  provider_network_type: "vlan"
+  provider_physical_network: "physnet2"
+  # This may be required for RDMA traffic
+  port_security_enabled: false
+  mtu: 9000
+  # Subnet configuration.
+  subnets:
+    - "{{ openstack_subnet_stackhpc_vlan }}"
+
+openstack_subnet_stackhpc_vlan:
+  name: "{{ openstack_project_stackhpc.name }}-vlan"
+  project: "{{ openstack_project_stackhpc.name }}"
+  cidr: "192.168.1.0/24"
+  gateway_ip: "192.168.1.1"
+  allocation_pool_start: "192.168.1.10"
+  allocation_pool_end: "192.168.1.250"
+
+openstack_router_stackhpc:
+  name: "{{ openstack_project_stackhpc.name }}"
+  project: "{{ openstack_project_stackhpc.name }}"
+  interfaces:
+    - "{{ openstack_network_stackhpc.name }}"
+    - "{{ openstack_network_stackhpc_vlan.name }}"
+  network: "{{ openstack_network_external_internet.name }}"
+
+openstack_secgroup_stackhpc:
+  name: default
+  project: "{{ openstack_project_stackhpc.name }}"
+  rules: "{{ openstack_secgroup_rules_default }}"
+
 
 ###############################################################################
 # Configuration of nova flavors.
 
 # List of nova flavors in the openstack project. Format is as required by the
 # stackhpc.os-flavors role.
-#openstack_flavors:
+openstack_flavors:
+  - "{{ openstack_flavor_godzilla }}"
+
+openstack_flavor_godzilla:
+  name: "godzilla"
+  ram: 393216
+  disk: 50
+  vcpus: 96
+  is_public: true
+  extra_specs:
+    hw:cpu_policy: "dedicated"
+    hw:cpu_thread_policy: "prefer"
+    hw:mem_page_size: "1GB"
+    hw:cpu_sockets: 2
+    hw:numa_nodes: 8
+    hw_rng:allowed: "True"
+    pci_passthrough: alias='CX6:1'
 
 ###############################################################################
 # Configuration of nova host aggregates.
@@ -39,7 +237,278 @@
 # Configuration of Glance software images.
 
 # List of Glance images. Format is as required by the stackhpc.os-images role.
-#openstack_images:
+# List of additional host packages.
+os_images_package_dependencies_extra:
+  # debootstrap is required to build ubuntu-minimal images.
+  - debootstrap
+
+# Drop cloud-init and stable-interface-names from default elements.
+os_images_common: enable-serial-console
+
+# Set this to true to force rebuilding images.
+os_images_force_rebuild: false
+
+# List of Glance images. Format is as required by the stackhpc.os-images role.
+openstack_images:
+  - "{{ openstack_image_rocky88 }}"
+  - "{{ openstack_image_rocky88_ofed2304 }}"
+  - "{{ openstack_image_rocky88_ofed2304_dev }}"
+  - "{{ openstack_image_rocky92 }}"
+  - "{{ openstack_image_ubuntu_jammy }}"
+
+# Rocky Linux 8.8 built using a custom containerfile
+openstack_image_rocky88:
+  name: "Rocky-8.8"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+    - "block-device-efi"
+    - "dracut-regenerate"
+  is_public: True
+  packages:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
+    - "bash-completion"
+    - "git"
+    - "linux-firmware"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "vim-enhanced"
+    - "NetworkManager-initscripts-updown"
+    - "dracut"
+    - "dracut-network"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-8.8"
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - /
+    YUM: dnf
+    DIB_RELEASE: "8.8"
+    DIB_DRACUT_ENABLED_MODULES:
+      - name: lvm
+        packages:
+          - lvm2
+      - name: kernel-modules
+      - name: kernel-network-modules
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8.8"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky 8.8 built with Mellanox OFED 23.04
+openstack_image_rocky88_ofed2304:
+  name: "Rocky-8.8-OFED-23.04"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+    - "block-device-efi"
+    - "dracut-regenerate"
+  is_public: False
+  packages:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
+    - "bash-completion"
+    - "git"
+    - "linux-firmware"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "vim-enhanced"
+    - "NetworkManager-initscripts-updown"
+    - "dracut"
+    - "dracut-network"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-8.8-ofed-23.04"
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - /
+    YUM: dnf
+    DIB_RELEASE: "8.8"
+    DIB_DRACUT_ENABLED_MODULES:
+      - name: lvm
+        packages:
+          - lvm2
+      - name: kernel-modules
+      - name: kernel-network-modules
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8.8"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky 8.8 built with Mellanox OFED 23.04 + devuser
+openstack_image_rocky88_ofed2304_dev:
+  name: "Rocky-8.8-OFED-23.04-dev"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+    - "block-device-efi"
+    - "dracut-regenerate"
+    - "devuser"
+  is_public: False
+  packages:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
+    - "bash-completion"
+    - "git"
+    - "linux-firmware"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "vim-enhanced"
+    - "NetworkManager-initscripts-updown"
+    - "dracut"
+    - "dracut-network"
+  env:
+    DIB_DEV_USER_USERNAME: "devuser"
+    DIB_DEV_USER_PASSWORD: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36346461356139626536656561353063623964356566303264383031653034633566386161333738
+          3831343166353132363332623232376463306138323038330a663231663833393132653965316534
+          36393032656138303632336231383437313532653335393038626132646635353664396233393037
+          3537396337623037370a393739396535316539663061623363376330636466333635646233306664
+          64623262396365373437356235346630613732666537623464663862653463333362
+    DIB_DEV_USER_PWDLESS_SUDO: "yes"
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-8.8-ofed-23.04"
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - /
+    YUM: dnf
+    DIB_RELEASE: "8.8"
+    DIB_DRACUT_ENABLED_MODULES:
+      - name: lvm
+        packages:
+          - lvm2
+      - name: kernel-modules
+      - name: kernel-network-modules
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8.8"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky Linux 9.2 built from custom containerfile
+openstack_image_rocky92:
+  name: "Rocky-9.2"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "selinux-permissive"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+  is_public: True
+  packages:
+    - "git"
+    - "tmux"
+    - "vim-enhanced"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-9.2"
+    YUM: dnf
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - "/"
+    DIB_RELEASE: "9.2"
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "9.2"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Ubuntu Jammy 22.04
+openstack_image_ubuntu_jammy:
+  name: "Ubuntu-22.04"
+  type: "raw"
+  is_public: True
+  elements:
+    - "cloud-init"
+    - "grub2"
+    - "openssh-server"
+    - "ubuntu-minimal"
+    - "vm"
+  packages:
+    - "bash-completion"
+    - "git"
+    - "less"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "iputils-ping"
+    - "netbase"
+    - "apt-utils"
+    - "curl"
+    - "debootstrap"
+    - "vim"
+  properties:
+    os_type: "linux"
+    os_distro: "ubuntu"
+    os_version: "jammy"
+    hw_rng_model: "virtio"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+  env:
+    DIB_RELEASE: "jammy"
+
 
 # List of Diskimage Builder (DIB) elements paths to include in image builds.
 #openstack_image_elements:
