@@ -6,4 +6,4 @@ source $CONFIG_ROOT/tools/merge_config/bin/activate
 
 export ANSIBLE_CONFIG=$CONFIG_ROOT/tools/merge_config/ansible.cfg
 
-ansible-playbook $CONFIG_ROOT/tools/merge_config/merge_templates.yml
+ansible-playbook $CONFIG_ROOT/tools/merge_config/merge_templates.yml 

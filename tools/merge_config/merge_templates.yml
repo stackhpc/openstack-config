@@ -22,7 +22,7 @@
 
   - name: Find old templates
     set_fact:
-      matching_temps: "{{ site_vars | dict2items | selectattr('key', 'match', 'kube*') | list }}"
+      matching_temps: "{{ site_vars | dict2items | selectattr('key', 'match', 'kube*') | rejectattr('key','match','kubernetes_images') | list }}"
     when: site_vars is defined and site_vars | length > 0
   
   - name: Find old images
