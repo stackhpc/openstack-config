@@ -2,7 +2,7 @@
 # Configuration of Magnum container clusters.
 
 {% for item in new_template_data %}
-{{ item.key }}:
+{{ item.key | replace('-', '_') }}:
   labels:
     monitoring_enabled: "true"
     kube_dashboard_enabled: "true"
@@ -26,11 +26,11 @@
 openstack_container_clusters_templates:
 {% if matching_temps is defined and matching_temps | length > 0 %}
 {% for item in matching_temps %}
-{% if item.key not in new_template_data | map(attribute='key') %}
+{% if (item.key| replace('_', '-')) not in (new_template_data | map(attribute='key')) %}
   - "{{ '{{ ' + item.key + ' }}' }}"
 {% endif %}
 {% endfor %}
 {% endif %}
 {% for item in new_template_data %}
-  - "{{ '{{ ' + item.key + ' }}' }}"
+  - "{{ '{{ ' + (item.key| replace('-', '_')) + ' }}' }}"
 {% endfor %}

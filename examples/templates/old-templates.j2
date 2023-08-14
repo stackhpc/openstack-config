@@ -3,7 +3,7 @@
 # Old magnum templates - hide until out of use
 
 {% for item in matching_temps %}
-{% if item.key not in new_template_data | map(attribute='key') %}
+{% if item.key not in new_template_data | map(attribute='key') | replace('-', '_') %}
 {{ item.key }}:
 {% for key, value in item.value.items() %}
 {% if key == 'is_hidden' %}

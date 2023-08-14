@@ -13,7 +13,12 @@ if [ -f "$CONFIG_ROOT/tools/merge_config/clouds.yaml" ]; then
 fi
 
 # If a Python virtualenv exists, activate it
+if [[ "$VIRTUAL_ENV" != "" ]]; then
+  VENV=$VIRTUAL_ENV
+fi
+
 VENV="${VENV:-"$CONFIG_ROOT/tools/merge_config/.venv"}"
+
 if [ -f "$VENV/bin/activate" ]; then
   echo "Activating Python venv at $VENV"
   source "$VENV/bin/activate"

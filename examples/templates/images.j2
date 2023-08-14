@@ -3,7 +3,7 @@
 
 {% for item in new_template_data %}
 # Image for {{ item.key }}
-{{ item.value.name }}:
+{{ item.value.name |  replace('-', '_') | replace('.', '_') }}:
   name: "{{ item.value.name }}"
   type: qcow2
   image_url: "{{ item.value.url }}"
@@ -18,11 +18,11 @@
 kubernetes_images:
 {% if matching_images is defined and matching_temps | length > 0 %}
 {% for item in matching_images %}
-{% if item.value.name not in new_template_data | map(attribute='value.name') %}
+{% if (item.value.name | replace('_', '-')) not in (new_template_data | map(attribute='value.name')) %}
   - "{{ '{{ ' + item.key + ' }}' }}"
 {% endif %}
 {% endfor %}
 {% endif %}
 {% for item in new_template_data %}
-  - "{{ '{{ ' + item.value.name + ' }}' }}"
+  - "{{ '{{ ' + (item.value.name | replace('-', '_')) | replace('.', '_') + ' }}' }}"
 {% endfor %}
