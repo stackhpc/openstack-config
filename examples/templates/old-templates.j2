@@ -6,9 +6,7 @@
 {% if (item.key | replace('_', '-')) not in new_template_data | map(attribute='key') %}
 {{ item.key }}:
 {% for key, value in item.value.items() %}
-{% if key == 'is_hidden' %}
-  {{ key }}: {{ value }}
-{% elif value is mapping %}
+{% if value is mapping %}
   {{ key }}:
 {% for k, v in value.items() %}
     {{ k }}: "{{ v }}"
@@ -18,7 +16,7 @@
 {% endif %}
 {% endfor %}
 {% if 'is_hidden' not in item.value %}
-is_hidden: True
+  is_hidden: True
 {% endif %}
 
 {% endif %}

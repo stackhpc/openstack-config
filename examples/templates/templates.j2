@@ -4,8 +4,8 @@
 {% for item in new_template_data %}
 {{ item.key | replace('-', '_') }}:
   labels:
-    monitoring_enabled: "true"
-    kube_dashboard_enabled: "true"
+    monitoring_enabled: "True"
+    kube_dashboard_enabled: "True"
     capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
     octavia_provider: {{ magnum_loadbalancer_provider }}
   external_network_id: {{ magnum_external_net_name }}
@@ -15,8 +15,8 @@
   name: "{{ item.key }}"
   coe: "kubernetes"
   network_driver: "calico"
-  master_lb_enabled: True
-  floating_ip_enabled: True
+  master_lb_enabled: "True"
+  floating_ip_enabled: "True"
   dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
   public: True
 
