@@ -3,7 +3,7 @@
 # Old magnum images - hide until out of use
 
 {% for item in matching_images %}
-{% if item.value.name not in new_template_data | map(attribute='value.name') | replace('-', '_') %}
+{% if (item.value.name | replace('_', '-')) not in new_template_data | map(attribute='value.name') %}
 {{ item.key }}:
 {% for key, value in item.value.items() %}
 {% if value is mapping %}

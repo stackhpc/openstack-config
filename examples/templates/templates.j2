@@ -26,7 +26,7 @@
 openstack_container_clusters_templates:
 {% if matching_temps is defined and matching_temps | length > 0 %}
 {% for item in matching_temps %}
-{% if (item.key| replace('_', '-')) not in (new_template_data | map(attribute='key')) %}
+{% if (item.key | replace('_', '-')) not in (new_template_data | map(attribute='key')) %}
   - "{{ '{{ ' + item.key + ' }}' }}"
 {% endif %}
 {% endfor %}
