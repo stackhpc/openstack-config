@@ -11,9 +11,9 @@ magnum_external_network: "external"
 magnum_octavia_provider: "ovn"
 
 # helm chart version to use for tenant clusters
-magnum_helm_chart_version: "openstack-cluster-0.1.1-dev.0.main.221"
+magnum_helm_chart_version: "0.1.1-dev.0.main.221"
 
-ubuntu-focal-kube-v1_25_11:
+ubuntu_focal_kube_v1_25_11:
   name: "ubuntu-focal-kube-v1.25.11"
   type: qcow2
   image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.25.11-230712-0939.qcow2"
@@ -23,7 +23,7 @@ ubuntu-focal-kube-v1_25_11:
     os_version: "20.04"
     kube_version: "v1.25.11"
 
-ubuntu-focal-kube-v1_26_6:
+ubuntu_focal_kube_v1_26_6:
   name: "ubuntu-focal-kube-v1.26.6"
   type: qcow2
   image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.26.6-230712-1010.qcow2"
@@ -33,7 +33,7 @@ ubuntu-focal-kube-v1_26_6:
     os_version: "20.04"
     kube_version: "v1.26.6"
 
-ubuntu-focal-kube-v1_27_3:
+ubuntu_focal_kube_v1_27_3:
   name: "ubuntu-focal-kube-v1.27.3"
   type: qcow2
   image_url: "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-focal-kube-v1.27.3-230712-1021.qcow2"
@@ -45,9 +45,9 @@ ubuntu-focal-kube-v1_27_3:
 
 # List of Glance images. Format is as required by the stackhpc.os-images role.
 openstack_images:
-  - "{{ ubuntu-focal-kube-v1_25_11 }}"
-  - "{{ ubuntu-focal-kube-v1_26_6 }}"
-  - "{{ ubuntu-focal-kube-v1_27_3 }}"
+  - "{{ ubuntu_focal_kube_v1_25_11 }}"
+  - "{{ ubuntu_focal_kube_v1_26_6 }}"
+  - "{{ ubuntu_focal_kube_v1_27_3 }}"
 
 ###############################################################################
 # Configuration of Magnum container clusters.
