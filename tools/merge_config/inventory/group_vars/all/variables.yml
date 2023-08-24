@@ -18,10 +18,9 @@ _magnum_external_net_name: >-
   {{
     lookup('pipe', 'openstack network list --external -f json') |
       from_json |
-      reject('search','^ceph$') |
-      first |
-      default(undef(hint = 'Unable to find external network')) |
-      json_query('Name')
+      map(attribute='Name') |
+      reject('search', 'ceph') |
+      first
   }}
 
 magnum_external_net_name: "{{ _magnum_external_net_name }}"
