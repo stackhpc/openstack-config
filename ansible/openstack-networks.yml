@@ -12,3 +12,4 @@
       os_networks: "{{ openstack_networks }}"
       os_networks_routers: "{{ openstack_routers }}"
       os_networks_security_groups: "{{ openstack_security_groups }}"
+      os_networks_rbac: "{{ openstack_networks_rbac }}"

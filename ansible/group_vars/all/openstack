@@ -21,6 +21,10 @@ openstack_routers: []
 # stackhpc.os-networks role.
 openstack_security_groups: []
 
+# List of RBAC definitions in the openstack projct. Format is as required by the
+# stackhpc.os-networks role.
+openstack_networks_rbac: []
+
 ###############################################################################
 # Configuration of nova flavors for OpenStack.
 
