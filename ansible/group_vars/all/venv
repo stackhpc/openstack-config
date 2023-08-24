@@ -1,3 +1,5 @@
 ---
 # Path to create virtualenv in which to install python dependencies.
 openstack_venv: "{{ ansible_env.PWD }}/openstack-config-venv"
+# Separate venv for roles that require sdk>=1.0 in case it breaks anything
+openstack_sdk_1_0_venv: "{{ ansible_env.PWD }}/openstack-1.0-venv"
