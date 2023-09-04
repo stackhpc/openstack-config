@@ -1,0 +1,29 @@
+---
+###############################################################################
+# Configuration of OpenStack user environment for OpenStack.
+
+# List of OpenStack projects. Format is as required by the stackhpc.os-projects
+# role.
+openstack_projects:
+  - "{{ openstack_service_project }}"
+
+# Definition of the openstack service project. Format is as required by the
+# stackhpc.os-projects role. Quotas are set to unlimited to avoid Octavia load
+# balancer creation failing on quota limits.
+openstack_service_project:
+  name: service
+  project_domain: default
+  user_domain: default
+  quotas: "{{ openstack_octavia_unlimited_quotas }}"
+
+# Dict of quotas to set for service project when Octavia is used.
+openstack_octavia_unlimited_quotas:
+  cores: -1
+  fixed_ips: -1
+  floatingip: -1
+  injected_file_size: -1
+  injected_files: -1
+  instances: -1
+  ram: -1
+  security_group: -1
+  security_group_rule: -1
