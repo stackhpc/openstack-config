@@ -2,6 +2,10 @@
 ###############################################################################
 # Configuration of OpenStack user environment for OpenStack.
 
+# List of OpenStack domains. Format is as required by the stackhpc.os-projects
+# role.
+openstack_domains: []
+
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
 openstack_projects: []
