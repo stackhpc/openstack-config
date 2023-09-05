@@ -10,3 +10,4 @@
       os_projects_admin_auth: "{{ openstack_auth }}"
       os_projects_cacert: "{{ openstack_cacert }}"
       os_projects: "{{ openstack_projects }}"
+      os_projects_domains: "{{ openstack_domains }}"
