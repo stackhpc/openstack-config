@@ -30,14 +30,36 @@
       matching_images: "{{ site_vars | dict2items | selectattr('key', 'match', 'ubuntu*') | list }}"
     when: site_vars is defined and site_vars | length > 0
   
+  - name: Fetch capi-helm-charts version
+    shell: "curl -s --url \"https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest\" --header \"Authorization: Bearer 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\" | grep tag_name |  awk -F '\"' '{print $4}' " 
+    register: helm_chart_version
+    changed_when: false
+
+  - name: Fetch dependencies.json using wget
+    shell: 'wget -O - "https://github.com/stackhpc/capi-helm-charts/releases/download/{{ helm_chart_version.stdout }}/dependencies.json" '
+    register: dependencies_response
+    changed_when: false
+  
+  - name: Parse JSON response
+    set_fact:
+      dependencies: "{{ dependencies_response.stdout | from_json | dict2items | list }}"
+  
+  # - name: Fetch manifest.json using wget
+  #   shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/0.1.2/manifest.json"
+  #   register: manifest_response
+  #   changed_when: false
+  
   - name: Fetch manifest.json using wget
-    shell: "wget -O - 'https://github.com/stackhpc/azimuth-images/releases/download/0.1.2/manifest.json'"
+    shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/{{ dependencies | json_query('[?key==`azimuth-images`].value | [0]') }}/manifest.json"
     register: manifest_response
     changed_when: false
 
   - name: Parse JSON response
     set_fact:
       new_template_data: "{{ manifest_response.stdout | from_json | dict2items | selectattr('key', 'match', 'kubernetes*') | list }}"
+
+  - debug: 
+      var: new_template_data
 
   - name: Template images & templates
     template:

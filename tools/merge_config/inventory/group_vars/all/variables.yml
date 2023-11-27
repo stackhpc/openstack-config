@@ -38,4 +38,4 @@ _magnum_loadbalancer_provider: >-
 
 magnum_loadbalancer_provider: "{{ _magnum_loadbalancer_provider }}"
 
-magnum_helm_chart_version: "0.1.1-dev.0.main.221"
+magnum_helm_chart_version: "{{ helm_chart_version.stdout }}"

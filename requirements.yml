@@ -2,10 +2,14 @@
 roles:
   - name: stackhpc.os-flavors
   - name: stackhpc.os-images
+    src: https://github.com/stackhpc/ansible-role-os-images.git
+    version: 1b076df89c6f0ac8e77b03572aa398aab89b7e23
   - name: stackhpc.os-networks
   - name: stackhpc.os-projects
   - name: stackhpc.os_host_aggregates
   - name: stackhpc.os-container-clusters
+    src: https://github.com/stackhpc/ansible-role-os-container-clusters.git
+    version: 67c098434dad6b02087b76286b5d23b411e24917
 
 collections:
   - name: openstack.cloud

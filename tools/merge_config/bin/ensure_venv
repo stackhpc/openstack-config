@@ -2,6 +2,8 @@
 # This script creates a virtualenv (if not already in one) and installs the required dependencies
 #####
 
+CONFIG_ROOT="$(dirname $(dirname $(dirname $(dirname $(realpath ${BASH_SOURCE[0]:-${(%):-%x}})))))"
+
 if [[ "$VIRTUAL_ENV" == "" ]]; then
   # Check python version
   # NOTE: Python 3.8 or newer is required for ansible 2.12 
@@ -10,9 +12,9 @@ if [[ "$VIRTUAL_ENV" == "" ]]; then
   PY_MINOR=8
   version_check() {
     python3 <<EOF
-    import sys
-    if sys.version_info[0] < $PY_MAJOR or sys.version_info[1] < $PY_MINOR:
-        sys.exit(1)
+import sys
+if sys.version_info[0] < $PY_MAJOR or sys.version_info[1] < $PY_MINOR:
+    sys.exit(1)
 EOF
   }
 
@@ -22,7 +24,7 @@ EOF
     exit 1
   fi
 
-  VENV="$CONFIG_ROOT/tools/merge_magnum_config/.venv"
+  VENV="$CONFIG_ROOT/tools/merge_config/.venv"
   if [ ! -d "$VENV" ]; then
     echo "Creating virtual environment at $VENV"
     python3 -m venv "$VENV"
@@ -31,8 +33,6 @@ fi
 else
 VENV=$VIRTUAL_ENV
 fi 
-
-CONFIG_ROOT="$(dirname $(dirname $(dirname $(dirname $(realpath ${BASH_SOURCE[0]:-${(%):-%x}})))))"
 
 echo "Upgrading pip"
 "$VENV/bin/python" -m pip install -U pip
