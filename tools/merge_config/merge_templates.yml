@@ -31,7 +31,7 @@
     when: site_vars is defined and site_vars | length > 0
   
   - name: Fetch capi-helm-charts version
-    shell: "curl -s --url \"https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest\" --header \"Authorization: Bearer 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\" | grep tag_name |  awk -F '\"' '{print $4}' " 
+    shell: "curl -s --url \"https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest\" | grep tag_name |  awk -F '\"' '{print $4}' " 
     register: helm_chart_version
     changed_when: false
 
