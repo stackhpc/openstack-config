@@ -4,8 +4,8 @@
   tags:
     - images
   roles:
-    - role: stackhpc.os-images
-      os_images_venv: "{{ openstack_venv }}"
+    - role: stackhpc.openstack.os_images
+      os_images_venv: "{{ openstack_sdk_1_0_venv }}"
       os_images_cache: "{{ ansible_env.PWD }}/openstack-config-image-cache"
       os_images_auth_type: "{{ openstack_auth_type }}"
       os_images_auth: "{{ openstack_auth }}"

@@ -17,7 +17,7 @@ packages. For example:
 
    $ virtualenv venv
    $ source venv/bin/activate
-   $ pip install -U pip
+   $ python -m pip install --upgrade pip
    $ pip install -r requirements.txt
 
 Install Ansible role and collection dependencies from Ansible Galaxy:
