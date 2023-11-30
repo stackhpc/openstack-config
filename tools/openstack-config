@@ -34,4 +34,5 @@ exec ansible-playbook \
   ${PLAYBOOK} \
   -i ansible/inventory \
   -e @etc/openstack-config/openstack-config.yml \
+  -e @etc/openstack-config/container-clusters.yml \
   $@
