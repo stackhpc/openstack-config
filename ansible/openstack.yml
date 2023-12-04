@@ -1,5 +1,5 @@
 ---
-#Top level playbook that includes all others.
+# Top level playbook that includes all others.
 - import_playbook: openstack-project.yml
 - import_playbook: openstack-networks.yml
 - import_playbook: openstack-flavors.yml
