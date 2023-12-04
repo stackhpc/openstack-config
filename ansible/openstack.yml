@@ -1,8 +1,8 @@
 ---
-# Top level playbook that includes all others.
-#- import_playbook: openstack-project.yml
+#Top level playbook that includes all others.
+- import_playbook: openstack-project.yml
 - import_playbook: openstack-networks.yml
-#- import_playbook: openstack-flavors.yml
-#- import_playbook: openstack-images.yml
-#- import_playbook: openstack-host-aggregates.yml
-#- import_playbook: openstack-container-clusters.yml
+- import_playbook: openstack-flavors.yml
+- import_playbook: openstack-images.yml
+- import_playbook: openstack-host-aggregates.yml
+- import_playbook: openstack-container-clusters.yml
