@@ -23,11 +23,6 @@ packages. For example:
 Install Ansible role and collection dependencies from Ansible Galaxy:
 
 .. code-block::
-
-   $ ansible-galaxy role install \
-        -p ansible/roles \
-        -r requirements.yml
-
    $ ansible-galaxy collection install \
        -p ansible/collections \
        -r requirements.yml
