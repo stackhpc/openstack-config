@@ -4,7 +4,7 @@
   tags:
     - host_aggregates
   roles:
-    - role: stackhpc.os_host_aggregates
+    - role: stackhpc.openstack.os_host_aggregates
       os_host_aggregates_venv: "{{ openstack_venv }}"
       os_host_aggregates_auth_type: "{{ openstack_auth_type }}"
       os_host_aggregates_auth: "{{ openstack_auth }}"

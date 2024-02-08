@@ -1,0 +1,26 @@
+{% if matching_temps is defined and matching_temps | length > 0 %}
+###############################################################################
+# Old magnum templates - hide until out of use
+
+{% set versions_to_check = new_template_data | map(attribute='value.kubernetes_version') | map('replace', '.', '-') %}
+{% set keys_and_versions = new_template_data | map(attribute='key') | zip(versions_to_check) %}
+{% for item in matching_temps %}
+{% if (item.key | replace('_', '-')) not in keys_and_versions | map('join', '-') %}
+{{ item.key }}:
+{% for key, value in item.value.items() %}
+{% if value is mapping %}
+  {{ key }}:
+{% for k, v in value.items() %}
+    {{ k }}: "{{ v }}"
+{% endfor %}
+{% else %}
+  {{ key }}: "{{ value }}"
+{% endif %}
+{% endfor %}
+{% if 'is_hidden' not in item.value %}
+  is_hidden: True
+{% endif %}
+
+{% endif %}
+{% endfor %}
+{% endif %}

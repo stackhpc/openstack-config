@@ -1,0 +1,41 @@
+
+_magnum_flavor_name: >-
+  {{
+    lookup('pipe', 'openstack flavor list -f json') |
+      from_json |
+      selectattr('Disk', '>=', 20) |
+      selectattr('VCPUs', '>=', 2) |
+      selectattr('VCPUs', '<=', 8) |
+      selectattr('RAM','>=',2048) |
+      selectattr('RAM','<=',8192) |
+      first |
+      json_query('Name')
+  }}
+
+magnum_flavor_name: "{{ _magnum_flavor_name }}"
+
+_magnum_external_net_name: >-
+  {{
+    lookup('pipe', 'openstack network list --external -f json') |
+      from_json |
+      map(attribute='Name') |
+      reject('search', 'ceph') |
+      first
+  }}
+
+magnum_external_net_name: "{{ _magnum_external_net_name }}"
+
+_magnum_loadbalancer_provider: >-
+  {{-
+    lookup('pipe', 'openstack loadbalancer provider list -f json') |
+      from_json |
+      map(attribute = 'name') |
+      reject('equalto', 'octavia') |
+      select('match','ovn') |
+      default('amphora') |
+      first
+  }}
+
+magnum_loadbalancer_provider: "{{ _magnum_loadbalancer_provider }}"
+
+magnum_helm_chart_version: "{{ helm_chart_version.stdout }}"

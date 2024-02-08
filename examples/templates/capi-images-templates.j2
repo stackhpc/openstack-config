@@ -1,0 +1,20 @@
+###############################################################################
+# Magnum container clusters shared variables.
+
+# Flavor must have a minimum of 2 VCPUs
+magnum_flavor: {{ magnum_flavor_name }}
+
+# Network to create tenant cluster FIPs on 
+magnum_external_network: {{ magnum_external_net_name }}
+
+# Provider for cluster loadbalancers
+magnum_octavia_provider: {{ magnum_loadbalancer_provider }}
+
+# helm chart version to use for tenant clusters
+magnum_helm_chart_version: {{ magnum_helm_chart_version }}
+
+{% include './old-images.j2' %}
+{% include './images.j2' %}
+
+{% include './old-templates.j2' %}
+{% include './templates.j2' %}

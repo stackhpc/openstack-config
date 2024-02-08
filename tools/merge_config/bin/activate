@@ -1,0 +1,27 @@
+#####
+# This script activates the specified environment
+#
+# It needs to be sourced rather than just executed as it sets environment variables
+# for the current shell
+#####
+export CONFIG_ROOT="$(dirname $(dirname $(dirname $(dirname $(realpath ${BASH_SOURCE[0]:-${(%):-%x}})))))"
+
+# If clouds.yaml provided in root dir, then prefer this
+if [ -f "$CONFIG_ROOT/tools/merge_config/clouds.yaml" ]; then
+  export OS_CLOUD="${OS_CLOUD:-"openstack"}"
+  export OS_CLIENT_CONFIG_FILE="$CONFIG_ROOT/tools/merge_config/clouds.yaml"
+fi
+
+# If a Python virtualenv exists, activate it
+if [[ "$VIRTUAL_ENV" != "" ]]; then
+  VENV=$VIRTUAL_ENV
+fi
+
+VENV="${VENV:-"$CONFIG_ROOT/tools/merge_config/.venv"}"
+
+if [ -f "$VENV/bin/activate" ]; then
+  echo "Activating Python venv at $VENV"
+  source "$VENV/bin/activate"
+fi
+
+echo "Activated environment"

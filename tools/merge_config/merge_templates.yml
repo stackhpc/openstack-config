@@ -1,0 +1,63 @@
+---
+- hosts: localhost
+  vars:
+    root_dir: "{{ lookup('env','CONFIG_ROOT') }}"
+    site_vars_file: "{{ root_dir }}/etc/openstack-config/container-clusters.yml"
+    
+  tasks: 
+  - name: Check if cluster containers file exists
+    stat:
+      path: "{{ site_vars_file }}"
+    register: file_stat
+
+  - name: Load site_vars from file if it exists, otherwise set to an empty dictionary
+    set_fact:
+      site_vars: "{{ lookup('file', site_vars_file) | from_yaml }}"
+    when: file_stat.stat.exists
+
+  - name: Set site_vars to an empty dictionary if the file doesn't exist
+    set_fact:
+      site_vars: {}
+    when: not file_stat.stat.exists
+
+  - name: Find old templates
+    set_fact:
+      matching_temps: "{{ site_vars | dict2items | selectattr('key', 'match', 'kube*') | rejectattr('key','match','kubernetes_images') | list }}"
+    when: site_vars is defined and site_vars | length > 0
+  
+  - name: Find old images
+    set_fact:
+      matching_images: "{{ site_vars | dict2items | selectattr('key', 'match', 'ubuntu*') | list }}"
+    when: site_vars is defined and site_vars | length > 0
+  
+  - name: Fetch capi-helm-charts version
+    shell: "curl -s --url \"https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest\" | grep tag_name |  awk -F '\"' '{print $4}' " 
+    register: helm_chart_version
+    changed_when: false
+
+  - name: Fetch dependencies.json using wget
+    shell: 'wget -O - "https://github.com/stackhpc/capi-helm-charts/releases/download/{{ helm_chart_version.stdout }}/dependencies.json" '
+    register: dependencies_response
+    changed_when: false
+  
+  - name: Parse JSON response
+    set_fact:
+      dependencies: "{{ dependencies_response.stdout | from_json | dict2items | list }}"
+  
+  - name: Fetch manifest.json using wget
+    shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/{{ dependencies | json_query('[?key==`azimuth-images`].value | [0]') }}/manifest.json"
+    register: manifest_response
+    changed_when: false
+
+  - name: Parse JSON response
+    set_fact:
+      new_template_data: "{{ manifest_response.stdout | from_json | dict2items | selectattr('key', 'match', 'kubernetes*') | list }}"
+
+  - debug: 
+      var: new_template_data
+
+  - name: Template images & templates
+    template:
+      src: "{{ root_dir }}/examples/templates/capi-images-templates.j2"
+      dest: "{{ root_dir }}/etc/openstack-config/container-clusters.yml"
+

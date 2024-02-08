@@ -1,0 +1,40 @@
+###############################################################################
+# Configuration of Magnum container clusters.
+
+{% for item in new_template_data %}
+{{ item.key | replace('-', '_') }}_{{ item.value.kubernetes_version | replace('.', '_') }}:
+  labels:
+    monitoring_enabled: "True"
+    kube_dashboard_enabled: "True"
+    capi_helm_chart_version: "{{ magnum_helm_chart_version }}"
+    octavia_provider: {{ magnum_loadbalancer_provider }}
+  external_network_id: {{ magnum_external_net_name }}
+  master_flavor: {{ magnum_flavor_name }}
+  flavor: {{ magnum_flavor_name }}
+  image: "{{ item.value.name }}"
+  name: "{{ item.key }}"
+  coe: "kubernetes"
+  network_driver: "calico"
+  master_lb_enabled: "True"
+  floating_ip_enabled: "True"
+  dns_nameserver: "1.1.1.1,8.8.8.8,8.8.4.4"
+  public: True
+
+{% endfor %}
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+openstack_container_clusters_templates:
+{% if matching_temps is defined and matching_temps | length > 0 %}
+# Old Templates
+{% set versions_to_check = new_template_data | map(attribute='value.kubernetes_version') | map('replace', '.', '-') %}
+{% set keys_and_versions = new_template_data | map(attribute='key') | zip(versions_to_check) %}
+{% for item in matching_temps %}
+{% if (item.key | replace('_', '-')) not in keys_and_versions | map('join', '-') %}
+  - "{{ '{{ ' + item.key + ' }}' }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+# New Templates
+{% for item in new_template_data %}
+  - "{{ '{{ ' + (item.key| replace('-', '_')) + '_' + (item.value.kubernetes_version | replace('.', '_')) + ' }}' }}"
+{% endfor %}
