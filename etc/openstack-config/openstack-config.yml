@@ -2,6 +2,10 @@
 ###############################################################################
 # Configuration of OpenStack projects and users user environment.
 
+# List of OpenStack domains. Format is as required by the stackhpc.os-projects
+# role.
+#openstack_domains:
+
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
 #openstack_projects:
@@ -20,6 +24,10 @@
 # List of security groups in the openstack project.
 # Format is as required by the stackhpc.os-networks role.
 #openstack_security_groups:
+
+# List of RBAC definitions in the openstack projct. Format is as required by the
+# stackhpc.os-networks role.
+#openstack_networks_rbac:
 
 ###############################################################################
 # Configuration of nova flavors.

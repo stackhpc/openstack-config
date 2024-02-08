@@ -4,8 +4,8 @@
   tags:
     - container-clusters-templates
   roles:
-    - role: stackhpc.os-container-clusters
-      os_container_clusters_venv: "{{ openstack_sdk_1_0_venv }}"
+    - role: stackhpc.openstack.os_container_clusters
+      os_container_clusters_venv: "{{ openstack_venv }}"
       os_container_clusters_auth_type: "{{ openstack_auth_type }}"
       os_container_clusters_auth: "{{ openstack_auth }}"
       os_container_clusters_cacert: "{{ openstack_cacert }}"
