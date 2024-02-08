@@ -44,11 +44,6 @@
     set_fact:
       dependencies: "{{ dependencies_response.stdout | from_json | dict2items | list }}"
   
-  # - name: Fetch manifest.json using wget
-  #   shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/0.1.2/manifest.json"
-  #   register: manifest_response
-  #   changed_when: false
-  
   - name: Fetch manifest.json using wget
     shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/{{ dependencies | json_query('[?key==`azimuth-images`].value | [0]') }}/manifest.json"
     register: manifest_response
