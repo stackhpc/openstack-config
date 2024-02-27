@@ -57,7 +57,6 @@ openstack_unlimited_quotas:
   backup_gigabytes: -1
   backups: -1
   cores: -1
-  fixed_ips: -1
   floatingip: -1
   gigabytes: -1
   injected_file_size: -1
