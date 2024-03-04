@@ -1,12 +1,6 @@
 ---
-roles:
-  - name: stackhpc.os-flavors
-  - name: stackhpc.os-images
-  - name: stackhpc.os-networks
-  - name: stackhpc.os-projects
-  - name: stackhpc.os_host_aggregates
-  - name: stackhpc.os-container-clusters
-
 collections:
   - name: openstack.cloud
-    version: '<2'
+    version: 2.1.0
+  - name: stackhpc.openstack
+    version: 0.1.0
