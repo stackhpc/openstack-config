@@ -1,0 +1,46 @@
+---
+- name: Generate cluster templates
+  hosts: localhost
+  vars:
+    root_dir: ../
+  tasks:
+
+  - name: Fetch capi-helm-charts release information
+    ansible.builtin.uri:
+      url: https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest
+    register: capi_helm_chart_release_data
+
+  - name: Fetch dependencies.json for capi-helm-charts release
+    ansible.builtin.uri:
+      url: https://raw.githubusercontent.com/stackhpc/capi-helm-charts/{{ capi_helm_chart_release_data.json.tag_name }}/dependencies.json
+    register: dependencies_response
+
+  - name: Fetch manifest.json for capi-helm-charts images
+    # ansible.builtin.uri:
+    #   url: https://raw.githubusercontent.com/stackhpc/azimuth-images/{{ dependencies_response.json['azimuth-images'] }}/manifest.json
+    # Above URL returns 404 even though similar URL for capi-helm-charts repo works fine
+    # Not sure why but fall back to wget + JSON parsing for now.
+    shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/{{ dependencies_response.json['azimuth-images'] }}/manifest.json"
+    register: manifest_response
+    changed_when: false
+
+  - name: Parse JSON response
+    set_fact:
+      new_template_data: "{{ manifest_response.stdout | from_json | dict2items | selectattr('key', 'match', 'kubernetes*') | list }}"
+
+  - name: Ensure output dir exists
+    ansible.builtin.file:
+      path: "{{ [root_dir, 'generated-magnum-snippets', now(utc=true,fmt='%Y-%m-%d-T%H-%M-%S')] | path_join }}"
+      state: directory
+      mode: '0755'
+    register: output_dir
+
+  - name: Write new image config to file
+    template:
+      src: "magnum-capi-images.j2"
+      dest: "{{ output_dir.path }}/images.yml"
+
+  - name: Write new cluster template config to file
+    template:
+      src: "magnum-capi-templates.j2"
+      dest: "{{ output_dir.path }}/templates.yml"

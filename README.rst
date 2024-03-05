@@ -76,3 +76,32 @@ configuration parameter:
 .. code-block::
 
    $ tools/openstack-config -- --vault-password-file config-secret.vault
+
+
+Magnum Cluster Templates
+========================
+
+To generate a new set of Magnum cluster templates and corresponding Glance image
+definitions which utilise the latest stable upstream release tag, set the following
+variables in `etc/openstack-config.yml`
+
+.. code-block:: yaml
+
+   magnum_flavor_name: # Chosen flavor on target cloud
+   magnum_external_net_name: # External network
+   magnum_loadbalancer_provider: # Octavia provider (e.g. 'ovn')
+
+then run the provided playbook with
+
+.. code-block:: bash
+
+   $ tools/openstack-config -p ansible/generate-magnum-capi-templates.yml
+
+This will create a ``generated-magnum-snippets`` directory in the repo root with
+a timestamped sub-directory containing an ``images.yml`` file and a ``templates.yml``
+file. The contents of these two files can then be added to any existing images and
+cluster templates in ``etc/openstack-config.yml``. When deploying the updated config,
+be sure to run the ``openstack-images.yml`` playbook *before* running the
+``openstack-container-clusters.yml`` playbook, otherwise the Magnum API will return
+an error referencing an invalid cluster type with image ``None``. This is handled
+automatically if running the full ``openstack.yml`` playbook.

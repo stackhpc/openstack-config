@@ -1,0 +1,24 @@
+# Images required for corresponding Magnum cluster template
+# To make use of the generated config snippets, copy them to
+# etc/openstack-config and add the images to the openstack_images
+# list.
+
+# List snippet to add to existing openstack_images:
+{% for item in new_template_data %}
+# -{% raw %} "{{ {% endraw %}{{ item.value.name |  replace('-', '_') | replace('.', '_') }}{% raw %} }}"{% endraw %}
+
+{% endfor %}
+
+{% for item in new_template_data %}
+# Image for {{ item.key }}
+{{ item.value.name |  replace('-', '_') | replace('.', '_') }}:
+  name: "{{ item.value.name }}"
+  type: qcow2
+  image_url: "{{ item.value.url }}"
+  visibility: "community"
+  properties:
+    os_distro: "ubuntu"
+    os_version: "20.04"
+    kube_version: "{{ item.value.kubernetes_version }}"
+
+{% endfor %}
