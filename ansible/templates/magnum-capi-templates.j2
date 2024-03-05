@@ -16,8 +16,8 @@
     capi_helm_chart_version: "{{ capi_helm_chart_release_data.json.tag_name }}"
     octavia_provider: {{ magnum_loadbalancer_provider }}
   external_network_id: {{ magnum_external_net_name }}
-  master_flavor: {{ magnum_flavor_name }}
-  flavor: {{ magnum_flavor_name }}
+  master_flavor: {{ magnum_default_flavor_name }}
+  flavor: {{ magnum_default_flavor_name }}
   image: "{{ item.value.name }}"
   name: "{{ item.key }}"
   coe: "kubernetes"
