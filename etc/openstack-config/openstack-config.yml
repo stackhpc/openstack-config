@@ -63,6 +63,37 @@
 # stackhpc.os-container-clusters role.
 #openstack_container_clusters_templates:
 
+# Configuration variables for generating new cluster template config.
+# These variables must be defined before using the generating new cluster
+# templates - see repo README for more details.
+
+# Must have at least 2 CPUs, 4GB RAM and 20GB disk
+# magnum_default_master_flavor_name:
+# magnum_default_worker_flavor_name:
+
+# Network to create tenant cluster FIPs on
+# magnum_external_net_name:
+
+# Provider for cluster loadbalancers (e.g. 'ovn')
+# magnum_loadbalancer_provider:
+
+# Kubernetes CNI to use for cluster templates (defaults to 'calico')
+# Must be one of the options supported by capi-helm-charts, see
+# https://github.com/stackhpc/capi-helm-charts/tree/main/charts/cluster-addons#container-network-interface-cni-plugins
+# magnum_default_network_driver:
+
+# Whether to create a master nodes loadbalancer for cluster templates (defaults to 'True')
+# magnum_master_lb_enabled:
+
+# Whether to add a floating IP to the loadbalancer for cluster templates (defaults to 'True')
+# magnum_cluster_floating_ip_enabled:
+
+# List of nameservers to use for cluster templates
+# magnum_cluster_default_dns_nameservers:
+
+# Whether generated cluster templates should be public by default (defaults to 'True')
+# magnum_cluster_templates_public:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

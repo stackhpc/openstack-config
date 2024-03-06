@@ -5,6 +5,14 @@
     root_dir: ../
   tasks:
 
+  - name: Check that required variables are defined
+    assert:
+      that:
+        - magnum_default_master_flavor_name is defined
+        - magnum_default_worker_flavor_name is defined
+        - magnum_external_net_name is defined
+        - magnum_loadbalancer_provider is defined
+
   - name: Fetch capi-helm-charts release information
     ansible.builtin.uri:
       url: https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest
@@ -14,6 +22,12 @@
     ansible.builtin.uri:
       url: https://raw.githubusercontent.com/stackhpc/capi-helm-charts/{{ capi_helm_chart_release_data.json.tag_name }}/dependencies.json
     register: dependencies_response
+
+  - name: Ensure wget packages is installed
+    become: true
+    package:
+      name: wget
+      state: present
 
   - name: Fetch manifest.json for capi-helm-charts images
     # ansible.builtin.uri:

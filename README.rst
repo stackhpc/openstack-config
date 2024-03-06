@@ -87,7 +87,8 @@ variables in `etc/openstack-config.yml`
 
 .. code-block:: yaml
 
-   magnum_default_flavor_name: # Chosen flavor on target cloud
+   magnum_default_master_flavor_name: # Chosen flavor on target cloud
+   magnum_default_worker_flavor_name: # Chosen flavor on target cloud
    magnum_external_net_name: # External network
    magnum_loadbalancer_provider: # Octavia provider (e.g. 'ovn')
 
