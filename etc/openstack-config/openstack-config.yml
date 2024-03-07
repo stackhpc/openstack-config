@@ -63,7 +63,9 @@
 # stackhpc.os-container-clusters role.
 #openstack_container_clusters_templates:
 
-# Configuration variables for generating new cluster template config.
+###############################################################################
+# Configuration variables for generating new Magnum cluster template config.
+
 # These variables must be defined before using the generating new cluster
 # templates - see repo README for more details.
 
