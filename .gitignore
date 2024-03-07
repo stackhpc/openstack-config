@@ -114,3 +114,10 @@ ansible/collections/**/
 *~
 .*.swp
 .*sw?
+
+# Ignore working dirs
+ansible/openstack-config-image-cache
+ansible/openstack-config-venv
+
+# Ignore tmp output from template generation playbook
+generated-magnum-snippets/
