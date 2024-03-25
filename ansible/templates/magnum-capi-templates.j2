@@ -11,8 +11,8 @@
 {% for item in new_template_data %}
 {{ item.key | replace('-', '_') }}_{{ item.value.kubernetes_version | replace('.', '_') }}:
   labels:
-    monitoring_enabled: "True"
-    kube_dashboard_enabled: "True"
+    monitoring_enabled: "true"
+    kube_dashboard_enabled: "true"
     keystone_auth_enabled: "false"
     capi_helm_chart_version: "{{ capi_helm_chart_release_data.json.tag_name }}"
     octavia_provider: {{ magnum_loadbalancer_provider }}
