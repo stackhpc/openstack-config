@@ -114,6 +114,7 @@ ansible/collections/**/
 *~
 .*.swp
 .*sw?
+.vscode/
 
 # Ignore working dirs
 ansible/openstack-config-image-cache

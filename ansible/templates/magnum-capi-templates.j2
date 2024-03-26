@@ -1,5 +1,5 @@
 # Magnum cluster templates generated using latest upstream release tags
-# To make use of the generated config snippets, copy them to the 
+# To make use of the generated config snippets, copy them to the
 # openstack_container_clusters_templates list.
 
 # List snippet to add to existing openstack_container_clusters_templates:
@@ -11,8 +11,9 @@
 {% for item in new_template_data %}
 {{ item.key | replace('-', '_') }}_{{ item.value.kubernetes_version | replace('.', '_') }}:
   labels:
-    monitoring_enabled: "True"
-    kube_dashboard_enabled: "True"
+    monitoring_enabled: "true"
+    kube_dashboard_enabled: "true"
+    keystone_auth_enabled: "false"
     capi_helm_chart_version: "{{ capi_helm_chart_release_data.json.tag_name }}"
     octavia_provider: {{ magnum_loadbalancer_provider }}
   external_network_id: {{ magnum_external_net_name }}
