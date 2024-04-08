@@ -1,0 +1,35 @@
+---
+###############################################################################
+# Configuration of cloudkitty for openstack.
+
+# Example playbook for configuring and registering Cloudkitty fields.
+# Included is registration for two different Nova flavor mappings and
+# a service mapping based on the stored image size in Glance. 
+
+- name: Ensure Cloudkitty ratings are registered
+  hosts: controllers[0]
+  tasks:
+    - import_role:
+        name: stackhpc.openstack.os_ratings
+      vars:
+        os_ratings_venv: "~/os-ratings-venv"
+        os_ratings_environment:
+          OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+        os_ratings_hashmap_field_mappings:
+          - service: instance
+            name: flavor_id
+            mappings:
+              - value: small
+                cost: 1.0
+                group: instance_uptime_flavor_id
+                type: flat
+              - value: large
+                cost: 2.0
+                group: instance_uptime_flavor_id
+                type: flat
+        os_ratings_hashmap_service_mappings:
+          - service: image.size
+            cost: 0.1
+            group: volume_ceph
+            type: flat
+
