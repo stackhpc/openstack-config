@@ -1,60 +1,14 @@
 ---
 ###############################################################################
-# Configuration of nova flavors for openstack.
+# Configuration of OpenStack projects and users user environment.
 
-# List of nova flavors in the openstack demo project. Format is as required by the
-# stackhpc.os-flavors role.
-openstack_flavors:
-  - "{{ openstack_flavor_m1_tiny }}"
-  - "{{ openstack_flavor_m1_small }}"
-  - "{{ openstack_flavor_m1_medium }}"
-  - "{{ openstack_flavor_m1_large }}"
-  - "{{ openstack_flavor_m1_xlarge }}"
+# List of OpenStack domains. Format is as required by the stackhpc.os-projects
+# role.
+#openstack_domains:
 
-# Virtual machine flavors.
-openstack_flavor_m1_tiny:
-  name: "m1.tiny"
-  ram: 512
-  disk: 1
-  vcpus: 1
-
-openstack_flavor_m1_small:
-  name: "m1.small"
-  ram: 2048
-  disk: 20
-  vcpus: 1
-
-openstack_flavor_m1_medium:
-  name: "m1.medium"
-  ram: 4096
-  disk: 40
-  vcpus: 2
-
-openstack_flavor_m1_large:
-  name: "m1.large"
-  ram: 8192
-  disk: 40
-  vcpus: 4
-
-openstack_flavor_m1_xlarge:
-  name: "m1.xlarge"
-  ram: 16384
-  disk: 100
-  vcpus: 8
-
-openstack_images:
-  - "{{ openstack_image_cirros_0_6_0 }}"
-
-openstack_image_cirros_0_6_0:
-  name: "cirros"
-  type: qcow2
-  image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
-  is_public: True
-  properties:
-    os_type: "linux"
-    os_distro: "cirros"
-    os_version: "0.6.0"
-    hw_rng_model: "virtio"
+# List of OpenStack projects. Format is as required by the stackhpc.os-projects
+# role.
+#openstack_projects:
 
 ###############################################################################
 # Configuration of networks, subnets and routers for openstack.
@@ -189,3 +143,121 @@ openstack_security_groups:
         port_range_min: 22
         port_range_max: 22
 
+# List of RBAC definitions in the openstack projct. Format is as required by the
+# stackhpc.os-networks role.
+#openstack_networks_rbac:
+
+###############################################################################
+# Configuration of nova flavors.
+
+# List of nova flavors in the openstack project. Format is as required by the
+# stackhpc.os-flavors role.
+openstack_flavors:
+  - "{{ openstack_flavor_m1_tiny }}"
+  - "{{ openstack_flavor_m1_small }}"
+  - "{{ openstack_flavor_m1_medium }}"
+  - "{{ openstack_flavor_m1_large }}"
+  - "{{ openstack_flavor_m1_xlarge }}"
+
+# Virtual machine flavors.
+openstack_flavor_m1_tiny:
+  name: "m1.tiny"
+  ram: 512
+  disk: 1
+  vcpus: 1
+
+openstack_flavor_m1_small:
+  name: "m1.small"
+  ram: 2048
+  disk: 20
+  vcpus: 1
+
+openstack_flavor_m1_medium:
+  name: "m1.medium"
+  ram: 4096
+  disk: 40
+  vcpus: 2
+
+openstack_flavor_m1_large:
+  name: "m1.large"
+  ram: 8192
+  disk: 40
+  vcpus: 4
+
+openstack_flavor_m1_xlarge:
+  name: "m1.xlarge"
+  ram: 16384
+  disk: 100
+  vcpus: 8
+
+###############################################################################
+# Configuration of nova host aggregates.
+
+# List of nova host aggregates. Format is as required by the
+# stackhpc.os_host_aggregates role.
+#openstack_host_aggregates:
+
+###############################################################################
+# Configuration of Glance software images.
+
+# List of Glance images. Format is as required by the stackhpc.os-images role.
+openstack_images:
+  - "{{ openstack_image_cirros_0_6_0 }}"
+
+openstack_image_cirros_0_6_0:
+  name: "cirros"
+  type: qcow2
+  image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
+  is_public: True
+  properties:
+    os_type: "linux"
+    os_distro: "cirros"
+    os_version: "0.6.0"
+    hw_rng_model: "virtio"
+
+# List of Diskimage Builder (DIB) elements paths to include in image builds.
+#openstack_image_elements:
+
+# List of Diskimage Builder (DIB) elements Git repositories to use in image
+# builds.
+#openstack_image_git_elements:
+
+###############################################################################
+# Configuration of Magnum container clusters.
+
+# List of magnum cluster templates. Format is as required by the
+# stackhpc.os-container-clusters role.
+#openstack_container_clusters_templates:
+
+###############################################################################
+# Configuration variables for generating new Magnum cluster template config.
+
+# These variables must be defined before using the generating new cluster
+# templates - see repo README for more details.
+
+# Must have at least 2 CPUs, 4GB RAM and 20GB disk
+# magnum_default_master_flavor_name:
+# magnum_default_worker_flavor_name:
+
+# Network to create tenant cluster FIPs on
+# magnum_external_net_name:
+
+# Provider for cluster loadbalancers (e.g. 'ovn')
+# magnum_loadbalancer_provider:
+
+# Kubernetes CNI to use for cluster templates (defaults to 'calico')
+# Must be one of the options supported by capi-helm-charts, see
+# https://github.com/stackhpc/capi-helm-charts/tree/main/charts/cluster-addons#container-network-interface-cni-plugins
+# magnum_default_network_driver:
+
+# Whether to create a master nodes loadbalancer for cluster templates (defaults to 'True')
+# magnum_master_lb_enabled:
+
+# Whether to add a floating IP to the loadbalancer for cluster templates (defaults to 'True')
+# magnum_cluster_floating_ip_enabled:
+
+# List of nameservers to use for cluster templates
+# magnum_cluster_default_dns_nameservers:
+
+# Whether generated cluster templates should be public by default (defaults to 'True')
+# magnum_cluster_templates_public:

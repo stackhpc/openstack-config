@@ -1,3 +1,4 @@
-# Use Ansible 5 for consistent Rocky 9 behaviour when available, otherwise use Ansible 4
+# Use Ansible 5 for consistent Rocky 9 behaviour when available, otherwise use
+# Ansible 4
 ansible>=4,<5; python_version<"3.7"
 ansible>=5,<6; python_version>="3.7"
