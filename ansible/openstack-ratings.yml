@@ -1,0 +1,12 @@
+---
+- name: Generate OpenStack software ratings
+  hosts: controllers[0]
+  tags:
+    - ratings
+  roles:
+    - role: stackhpc.openstack.os_ratings
+      os_ratings_hashmap_field_mappings: "{{ ratings_hashmap_field_mappings }}"
+      os_ratings_hashmap_service_mappings: "{{ ratings_hashmap_service_mappings }}"
+      os_ratings_venv: "{{ ratings_venv }}"
+      os_ratings_upper_constraints_file: "{{ ratings_upper_constraints_file }}"
+      os_ratings_environment: "{{ ratings_environment }}"

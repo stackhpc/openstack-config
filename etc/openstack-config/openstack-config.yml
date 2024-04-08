@@ -101,15 +101,15 @@
 
 # Path to where a virtual environment directory will be created.
 #
-#os_ratings_venv: /path/to/venv/directory
+#ratings_venv: /path/to/venv/directory
 
 # File path or URL containing Python upper constraints.
 #
-#os_ratings_upper_constraints_file: /path/to/upper_constraints_file
+#ratings_upper_constraints_file: /path/to/upper_constraints_file
 
 # Environment variables for the OpenStack CLI. By default this is left empty.
 #
-#os_ratings_environment:
+#ratings_environment:
 #  - name: ENV_VAR_NAME
 #    value: ENV_VAR_VALUE
 
@@ -118,7 +118,7 @@
 # Example of the mappings and their fields can be found below, 
 # however for more information please refer to the README.md file.
 #
-#os_ratings_hashmap_field_mappings:
+#ratings_hashmap_field_mappings:
 #  - service: SERVICE_NAME
 #    name: FIELD_NAME
 #    mappings:
@@ -130,7 +130,7 @@
 # Much like the field mappings above, the service mappings are a list of
 # dictionaries, however these are not associated with a field.
 #
-#os_ratings_hashmap_service_mappings:
+#ratings_hashmap_service_mappings:
 #  - service: SERVICE_NAME
 #    cost: MAPPING_COST
 #    group: MAPPING_GROUP

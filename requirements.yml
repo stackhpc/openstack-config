@@ -2,5 +2,7 @@
 collections:
   - name: openstack.cloud
     version: 2.1.0
-  - name: stackhpc.openstack
-    version: 0.1.1
+  - name: https://github.com/stackhpc/ansible-collection-openstack.git
+    version: cloudkitty
+  # - name: stackhpc.openstack
+  #   version: 0.1.1

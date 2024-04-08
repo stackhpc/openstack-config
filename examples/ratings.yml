@@ -7,7 +7,7 @@
 # a service mapping based on the stored image size in Glance. 
 
 - name: Ensure Cloudkitty ratings are registered
-  hosts: controllers[0]
+  hosts: localhost
   tasks:
     - import_role:
         name: stackhpc.openstack.os_ratings
