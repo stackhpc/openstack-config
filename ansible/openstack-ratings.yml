@@ -1,6 +1,6 @@
 ---
 - name: Generate OpenStack software ratings
-  hosts: controllers[0]
+  hosts: localhost
   tags:
     - ratings
   roles:
