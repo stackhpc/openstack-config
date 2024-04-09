@@ -12,7 +12,7 @@
     - import_role:
         name: stackhpc.openstack.os_ratings
       vars:
-        os_ratings_venv: "~/os-ratings-venv"
+        os_ratings_venv: "{{ openstack_venv }}"
         os_ratings_environment:
           OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
         os_ratings_hashmap_field_mappings:

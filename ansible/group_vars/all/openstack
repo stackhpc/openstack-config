@@ -51,10 +51,6 @@ openstack_image_git_elements: []
 ###############################################################################
 # Configuration variables for a Cloudkitty ratings service deployment.
 
-# Path to where a virtual environment directory will be created.
-#
-ratings_venv: "~/os-ratings-venv"
-
 # File path or URL containing Python upper constraints.
 #
 ratings_upper_constraints_file: []
