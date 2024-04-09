@@ -61,7 +61,7 @@ ratings_upper_constraints_file: []
 
 # Environment variables for the OpenStack CLI. By default this is left empty.
 #
-#ratings_environment:
+ratings_environment: []
 #  - name: ENV_VAR_NAME
 #    value: ENV_VAR_VALUE
 
