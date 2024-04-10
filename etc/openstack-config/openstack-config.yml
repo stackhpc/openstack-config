@@ -105,29 +105,20 @@
 #   # #   #   #     #     #        MORE INFO CAN BE FOUND IN THE README.md
 #     #    ###      #     #####    'stackhpc-kayobe-config' DOCS.
 
-# File path or URL containing Python upper constraints.
-####### THIS IS NOT NECCESSARY TO CONFIGURE ###########
-#openstack_ratings_upper_constraints_file: /path/to/upper_constraints_file
-
-# Environment variables for the OpenStack CLI. By default this is left empty.
-################### THIS IS NOT NECCESSARY TO CONFIGURE #####################
-#openstack_ratings_environment:
-#  - name: ENV_VAR_NAME
-#    value: ENV_VAR_VALUE
 
 # A list where each item is a dictionary mapping the associated fields, 
-# with the 'mappings' field also being a list of dictionaries. 
-# Example of the mappings and their fields can be found below, 
-# however for more information please refer to the README.md file.
+# with the 'mappings' field also being a list of dictionaries. Example
+# of the mappings and their fields can be found below, however for more
+# information please refer to the stackhpc.openstack.os_ratings role docs.
 #
 #openstack_ratings_hashmap_field_mappings:
 #  - service: SERVICE_NAME
-#    name: FIELD_NAME
-#    mappings:
+#    name: FIELD_NAME 
+#    mappings:          
 #      - value: MAPPING_VALUE
 #        cost: MAPPING_COST
-#        group: MAPPING_GROUP
 #        type: MAPPING_TYPE
+#        group: MAPPING_GROUP <---THIS IS OPTIONAL---
 
 # Much like the field mappings above, the service mappings are a list of
 # dictionaries, however these are not associated with a field.
@@ -135,8 +126,8 @@
 #openstack_ratings_hashmap_service_mappings:
 #  - service: SERVICE_NAME
 #    cost: MAPPING_COST
-#    group: MAPPING_GROUP
 #    type: MAPPING_TYPE
+#    group: MAPPING_GROUP <---THIS IS OPTIONAL---
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

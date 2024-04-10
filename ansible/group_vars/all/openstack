@@ -48,28 +48,6 @@ openstack_image_elements: []
 
 # List of diskimage-builder element git repos to pull
 openstack_image_git_elements: []
-###############################################################################
-# Configuration variables for a CloudKitty ratings service deployment.
-
-# File path or URL containing Python upper constraints.
-#
-openstack_ratings_upper_constraints_file: []
-
-# Environment variables for the OpenStack CLI. By default this is left empty.
-#
-openstack_ratings_environment: []
-
-# A list where each item is a dictionary mapping the associated fields, 
-# with the 'mappings' field also being a list of dictionaries. 
-# Example of the mappings and their fields can be found below, 
-# however for more information please refer to the README.md file.
-#
-openstack_ratings_hashmap_field_mappings: []
-
-# Much like the field mappings above, the service mappings are a list of
-# dictionaries, however these are not associated with a field.
-#
-openstack_ratings_hashmap_service_mappings: []
 
 ###############################################################################
 # Configuration of nova host aggregates for OpenStack.
@@ -84,3 +62,18 @@ openstack_host_aggregates: []
 # List of clusters templates in the openstack project. Format is as required by the
 # stackhpc.os-container-clusters role.
 openstack_container_clusters_templates: []
+
+###############################################################################
+# Configuration variables for a CloudKitty ratings service deployment.
+
+# A list where each item is a dictionary mapping the associated fields, 
+# with the 'mappings' field also being a list of dictionaries. 
+# Example of the mappings and their fields can be found below, 
+# however for more information please refer to the README.md file.
+#
+openstack_ratings_hashmap_field_mappings: []
+
+# Much like the field mappings above, the service mappings are a list of
+# dictionaries, however these are not associated with a field.
+#
+openstack_ratings_hashmap_service_mappings: []

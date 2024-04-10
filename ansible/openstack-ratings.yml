@@ -8,5 +8,3 @@
       os_ratings_hashmap_field_mappings: "{{ openstack_ratings_hashmap_field_mappings }}"
       os_ratings_hashmap_service_mappings: "{{ openstack_ratings_hashmap_service_mappings }}"
       os_ratings_venv: "{{ openstack_venv }}"
-      os_ratings_upper_constraints_file: "{{ openstack_ratings_upper_constraints_file }}"
-      os_ratings_environment: "{{ openstack_ratings_environment }}"
