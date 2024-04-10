@@ -99,6 +99,12 @@
 ###############################################################################
 # Configuration variables for a Cloudkitty ratings service deployment.
 
+#     #    ###   #######  #####    IN ORDER TO SUCCESSFULLY DEPLOY CLOUDKITTY
+# #   #   #   #     #     #        'cloudkitty.conf' & 'metrics.yml' MUST BE    
+#  #  #   #   #     #     ###      PROVIDED ALONGSIDE THE FOLLOWING CONFIG.
+#   # #   #   #     #     #        MORE INFO CAN BE FOUND IN THE README.md
+#     #    ###      #     #####    'stackhpc-kayobe-config' DOCS.
+
 # File path or URL containing Python upper constraints.
 #
 #ratings_upper_constraints_file: /path/to/upper_constraints_file

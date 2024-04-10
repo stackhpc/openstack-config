@@ -99,6 +99,10 @@
 ###############################################################################
 # Configuration variables for a Cloudkitty ratings service deployment.
 
+# 
+#
+#
+
 # File path or URL containing Python upper constraints.
 #
 # ratings_upper_constraints_file: /path/to/upper_constraints_file
@@ -118,11 +122,27 @@ ratings_hashmap_field_mappings:
   - service: instance
     name: flavor_id
     mappings:
-      - value: small
+      - value: '1' #tiny
         cost: 1.0
         group: instance_uptime_flavor_id
         type: flat
-      - value: large
+      - value: '2' #small
+        cost: 2.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '3' #medium
+        cost: 3.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '4' #large
+        cost: 4.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '5' #xlarge
+        cost: 5.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '6' #tiny 2
         cost: 2.0
         group: instance_uptime_flavor_id
         type: flat
@@ -131,11 +151,11 @@ ratings_hashmap_field_mappings:
 # Much like the field mappings above, the service mappings are a list of
 # dictionaries, however these are not associated with a field.
 #
-ratings_hashmap_service_mappings:
-  - service: image.size
-    cost: 0.1
-    group: volume_ceph
-    type: flat
+# ratings_hashmap_service_mappings:
+#   - service: image.size
+#     cost: 0.1
+#     group: image_size
+#     type: flat
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

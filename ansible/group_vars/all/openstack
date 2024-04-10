@@ -66,7 +66,7 @@ ratings_environment: []
 # Example of the mappings and their fields can be found below, 
 # however for more information please refer to the README.md file.
 #
-#ratings_hashmap_field_mappings:
+ratings_hashmap_field_mappings: []
 #  - service: SERVICE_NAME
 #    name: FIELD_NAME
 #    mappings:
@@ -78,7 +78,7 @@ ratings_environment: []
 # Much like the field mappings above, the service mappings are a list of
 # dictionaries, however these are not associated with a field.
 #
-#ratings_hashmap_service_mappings:
+ratings_hashmap_service_mappings: []
 #  - service: SERVICE_NAME
 #    cost: MAPPING_COST
 #    group: MAPPING_GROUP
