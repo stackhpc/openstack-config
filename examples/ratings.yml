@@ -2,34 +2,81 @@
 ###############################################################################
 # Configuration of cloudkitty for openstack.
 
-# Example playbook for configuring and registering Cloudkitty fields.
-# Included is registration for two different Nova flavor mappings and
+# Example configuration for registering Cloudkitty fields.
+# Included is mapping for various different compute flavors & 
 # a service mapping based on the stored image size in Glance. 
 
-- name: Ensure Cloudkitty ratings are registered
-  hosts: localhost
-  tasks:
-    - import_role:
-        name: stackhpc.openstack.os_ratings
-      vars:
-        os_ratings_venv: "{{ openstack_venv }}"
-        os_ratings_environment:
-          OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
-        os_ratings_hashmap_field_mappings:
-          - service: instance
-            name: flavor_id
-            mappings:
-              - value: small
-                cost: 1.0
-                group: instance_uptime_flavor_id
-                type: flat
-              - value: large
-                cost: 2.0
-                group: instance_uptime_flavor_id
-                type: flat
-        os_ratings_hashmap_service_mappings:
-          - service: image.size
-            cost: 0.1
-            group: volume_ceph
-            type: flat
+ratings_hashmap_field_mappings:
+  - service: instance
+    name: flavor_id
+    mappings:
+      - value: '1' #tiny
+        cost: 1.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '2' #small
+        cost: 2.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '3' #medium
+        cost: 3.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '4' #large
+        cost: 4.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '5' #xlarge
+        cost: 5.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '6' #tiny 2
+        cost: 2.0
+        group: instance_uptime_flavor_id
+        type: flat
 
+ratings_hashmap_service_mappings:
+  - service: image.size
+    cost: 0.1
+    group: image_size
+    type: flat
+
+#     #    ###   #######  #####    THIS CONFIGURATION FILE ONLY WORKS IF
+# #   #   #   #     #     #        'cloudkitty.conf' & 'metrics.yml' ARE    
+#  #  #   #   #     #     ###      CONFIGURED AS SHOWN BELOW. MORE INFO CAN
+#   # #   #   #     #     #        BE FOUND IN THE 'stackhpc-kayobe-config' 
+#     #    ###      #     #####    DOCS.
+
+
+# CORRESPONDING cloudkitty.conf
+#
+# [collect]
+# period = 120
+# scope_key = tenant_id
+
+# CORRESPONDING metrics.yml
+#
+# metrics:
+#   openstack_nova_server_status:
+#     alt_name: instance
+#     unit: instance
+#     mutate: MAP
+#     mutate_map:
+#       0.0: 1.0  # ACTIVE
+#       11.0: 1.0 # SHUTOFF
+#       12.0: 1.0 # SUSPENDED
+#       16.0: 1.0 # PAUSED
+#     groupby:
+#       - user_id
+#       - tenant_id
+#       - uuid
+#     metadata:
+#       - flavor_id
+#       - name
+#   openstack_glance_image_bytes:
+#     alt_name: image.size
+#     factor: 1/1073741824 # image.size measurements are in B
+#     unit: GiB
+#     groupby:
+#       - resource_id
+#       - project_id

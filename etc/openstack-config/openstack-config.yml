@@ -99,17 +99,19 @@
 ###############################################################################
 # Configuration variables for a Cloudkitty ratings service deployment.
 
-# 
-#
-#
+#     #    ###   #######  #####    IN ORDER TO SUCCESSFULLY DEPLOY CLOUDKITTY
+# #   #   #   #     #     #        'cloudkitty.conf' & 'metrics.yml' MUST BE    
+#  #  #   #   #     #     ###      PROVIDED ALONGSIDE THE FOLLOWING CONFIG.
+#   # #   #   #     #     #        MORE INFO CAN BE FOUND IN THE README.md
+#     #    ###      #     #####    'stackhpc-kayobe-config' DOCS.
 
 # File path or URL containing Python upper constraints.
-#
-# ratings_upper_constraints_file: /path/to/upper_constraints_file
+####### THIS IS NOT NECCESSARY TO CONFIGURE ###########
+#ratings_upper_constraints_file: /path/to/upper_constraints_file
 
 # Environment variables for the OpenStack CLI. By default this is left empty.
-#
-# ratings_environment:
+################### THIS IS NOT NECCESSARY TO CONFIGURE #####################
+#ratings_environment:
 #  - name: ENV_VAR_NAME
 #    value: ENV_VAR_VALUE
 
@@ -118,44 +120,23 @@
 # Example of the mappings and their fields can be found below, 
 # however for more information please refer to the README.md file.
 #
-ratings_hashmap_field_mappings:
-  - service: instance
-    name: flavor_id
-    mappings:
-      - value: '1' #tiny
-        cost: 1.0
-        group: instance_uptime_flavor_id
-        type: flat
-      - value: '2' #small
-        cost: 2.0
-        group: instance_uptime_flavor_id
-        type: flat
-      - value: '3' #medium
-        cost: 3.0
-        group: instance_uptime_flavor_id
-        type: flat
-      - value: '4' #large
-        cost: 4.0
-        group: instance_uptime_flavor_id
-        type: flat
-      - value: '5' #xlarge
-        cost: 5.0
-        group: instance_uptime_flavor_id
-        type: flat
-      - value: '6' #tiny 2
-        cost: 2.0
-        group: instance_uptime_flavor_id
-        type: flat
-
+#ratings_hashmap_field_mappings:
+#  - service: SERVICE_NAME
+#    name: FIELD_NAME
+#    mappings:
+#      - value: MAPPING_VALUE
+#        cost: MAPPING_COST
+#        group: MAPPING_GROUP
+#        type: MAPPING_TYPE
 
 # Much like the field mappings above, the service mappings are a list of
 # dictionaries, however these are not associated with a field.
 #
-# ratings_hashmap_service_mappings:
-#   - service: image.size
-#     cost: 0.1
-#     group: image_size
-#     type: flat
+#ratings_hashmap_service_mappings:
+#  - service: SERVICE_NAME
+#    cost: MAPPING_COST
+#    group: MAPPING_GROUP
+#    type: MAPPING_TYPE
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
