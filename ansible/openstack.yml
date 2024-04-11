@@ -6,3 +6,4 @@
 - import_playbook: openstack-images.yml
 - import_playbook: openstack-host-aggregates.yml
 - import_playbook: openstack-container-clusters.yml
+- import_playbook: openstack-ratings.yml

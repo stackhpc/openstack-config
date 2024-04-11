@@ -1,0 +1,49 @@
+---
+###############################################################################
+# Configuration of CloudKitty for openstack.
+
+# Example configuration for registering CloudKitty fields.
+# Included is mapping for various different compute flavors & 
+# a service mapping based on the stored image size in Glance. 
+
+openstack_ratings_hashmap_field_mappings:
+  - service: instance
+    name: flavor_id
+    mappings:
+      - value: '1' #tiny compute flavour with an OpenStack flavor ID of 1
+        cost: 1.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '2' #small compute flavour with an OpenStack flavor ID of 2
+        cost: 2.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '3' #medium compute flavour with an OpenStack flavor ID of 3
+        cost: 3.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '4' #large compute flavour with an OpenStack flavor ID of 4
+        cost: 4.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '5' #xlarge compute flavour with an OpenStack flavor ID of 5
+        cost: 5.0
+        group: instance_uptime_flavor_id
+        type: flat
+      - value: '6' #tiny 2 compute flavour with an OpenStack flavor ID of 6
+        cost: 2.0
+        group: instance_uptime_flavor_id
+        type: flat
+
+openstack_ratings_hashmap_service_mappings:
+  - service: image.size
+    cost: 0.1
+    group: image_size
+    type: flat
+
+#     #    ###   #######  #####    THIS CONFIGURATION FILE ONLY WORKS IF
+# #   #   #   #     #     #        'cloudkitty.conf' & 'metrics.yml' ARE    
+#  #  #   #   #     #     ###      CONFIGURED CORRECTLY. MORE INFO CAN
+#   # #   #   #     #     #        BE FOUND IN THE 'stackhpc-kayobe-config' 
+#     #    ###      #     #####    DOCS.
+
