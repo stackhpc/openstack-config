@@ -86,7 +86,7 @@ To generate a new set of Magnum cluster templates and corresponding Glance image
 definitions which utilise the latest stable upstream release tag, set the following
 variables in `etc/openstack-config.yml`
 
-.. code-block:: yaml
+.. code-block::
 
    magnum_default_master_flavor_name: # Chosen flavor on target cloud
    magnum_default_worker_flavor_name: # Chosen flavor on target cloud
@@ -95,7 +95,7 @@ variables in `etc/openstack-config.yml`
 
 then run the provided playbook with
 
-.. code-block:: bash
+.. code-block::
 
    $ tools/openstack-config -p ansible/generate-magnum-capi-templates.yml
 
