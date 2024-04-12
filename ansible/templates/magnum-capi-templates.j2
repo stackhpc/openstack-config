@@ -16,6 +16,9 @@
     keystone_auth_enabled: "false"
     capi_helm_chart_version: "{{ capi_helm_chart_release_data.json.tag_name }}"
     octavia_provider: {{ magnum_loadbalancer_provider }}
+{% if magnum_template_extra_labels is defined %}
+    {{ magnum_template_extra_labels | to_nice_yaml | indent(4) -}}
+{% endif %}
   external_network_id: {{ magnum_external_net_name }}
   master_flavor: {{ magnum_default_master_flavor_name }}
   flavor: {{ magnum_default_worker_flavor_name }}
