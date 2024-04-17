@@ -88,10 +88,16 @@ variables in `etc/openstack-config.yml`
 
 .. code-block:: yaml
 
-   magnum_default_master_flavor_name: # Chosen flavor on target cloud
-   magnum_default_worker_flavor_name: # Chosen flavor on target cloud
-   magnum_external_net_name: # External network
-   magnum_loadbalancer_provider: # Octavia provider (e.g. 'ovn')
+   # Chosen flavor on target cloud
+   magnum_default_master_flavor_name:
+   # Chosen flavor on target cloud
+   magnum_default_worker_flavor_name:
+   # External network to use for load balancers etc.
+   magnum_external_net_name:
+   # Octavia provider (e.g. 'ovn')
+   magnum_loadbalancer_provider:
+   # Optional list of extra labels to add to all generated cluster templates
+   magnum_template_extra_labels:
 
 then run the provided playbook with
 
