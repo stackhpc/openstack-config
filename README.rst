@@ -10,13 +10,13 @@ Preparation
 ===========
 
 Ensure that Ansible is installed, either via the system package manager or pip.
-If required, use a virtualenv to avoid interference with the system python
-packages. For example:
+It is recommended that you use a python virtual environment to avoid
+interference with the system python packages. For example:
 
 .. code-block::
 
-   $ virtualenv venv
-   $ source venv/bin/activate
+   $ python3 -m venv openstack-venv
+   $ source openstack-venv/bin/activate
    $ python -m pip install --upgrade pip
    $ pip install -r requirements.txt
 
