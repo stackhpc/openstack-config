@@ -18,7 +18,11 @@ openstack_images:
   - "{{ openstack_image_centos_stream8 }}"
   - "{{ openstack_image_cirros_0_6_0 }}"
   - "{{ openstack_image_rocky8 }}"
+  - "{{ openstack_image_rocky88 }}"
+  - "{{ openstack_image_rocky91 }}"
+  - "{{ openstack_image_rocky92 }}"
   - "{{ openstack_image_ubuntu_focal }}"
+  - "{{ openstack_image_ubuntu_jammy }}"
 
 # CentOS Stream 8.
 openstack_image_centos_stream8:
@@ -62,7 +66,7 @@ openstack_image_cirros_0_6_0:
     os_version: "0.6.0"
     hw_rng_model: "virtio"
 
-# Rocky Linux 8.
+# Rocky Linux 8, latest release.
 openstack_image_rocky8:
   name: "Rocky8"
   type: raw
@@ -97,6 +101,129 @@ openstack_image_rocky8:
     os_version: "8"
     hw_rng_model: "virtio"
 
+# Rocky Linux 8.8 built using a custom containerfile
+openstack_image_rocky88:
+  name: "Rocky-8.8"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+    - "block-device-efi"
+    - "dracut-regenerate"
+  is_public: True
+  packages:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
+    - "bash-completion"
+    - "git"
+    - "linux-firmware"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "vim-enhanced"
+    - "NetworkManager-initscripts-updown"
+    - "dracut"
+    - "dracut-network"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-8.8"
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - /
+    YUM: dnf
+    DIB_RELEASE: "8.8"
+    DIB_DRACUT_ENABLED_MODULES:
+      - name: lvm
+        packages:
+          - lvm2
+      - name: kernel-modules
+      - name: kernel-network-modules
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8.8"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky Linux 9.1 built from custom containerfile
+openstack_image_rocky91:
+  name: "Rocky-9.1"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "selinux-permissive"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+  is_public: True
+  packages:
+    - "git"
+    - "tmux"
+    - "vim-enhanced"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-9.1"
+    YUM: dnf
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - "/"
+    DIB_RELEASE: "9.1"
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "9.1"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky Linux 9.2 built from custom containerfile
+openstack_image_rocky92:
+  name: "Rocky-9.2"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "selinux-permissive"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+  is_public: True
+  packages:
+    - "git"
+    - "tmux"
+    - "vim-enhanced"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-9.2"
+    YUM: dnf
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - "/"
+    DIB_RELEASE: "9.2"
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "9.2"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
 # Ubuntu Focal 20.04.
 openstack_image_ubuntu_focal:
   name: "Ubuntu-20.04"
@@ -124,3 +251,139 @@ openstack_image_ubuntu_focal:
   env:
     DIB_RELEASE: "focal"
     DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
+
+# Ubuntu Jammy 22.04
+openstack_image_ubuntu_jammy:
+  name: "Ubuntu-22.04"
+  type: "raw"
+  is_public: True
+  elements:
+    - "cloud-init"
+    - "grub2"
+    - "openssh-server"
+    - "ubuntu-minimal"
+    - "vm"
+  packages:
+    - "bash-completion"
+    - "git"
+    - "less"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "iputils-ping"
+    - "netbase"
+    - "apt-utils"
+    - "curl"
+    - "debootstrap"
+    - "vim"
+  properties:
+    os_type: "linux"
+    os_distro: "ubuntu"
+    os_version: "jammy"
+    hw_rng_model: "virtio"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+  env:
+    DIB_RELEASE: "jammy"
+
+################################################################################
+# Rocky Linux plus Open Fabrics (OFED)
+
+# Rocky 8.8 built with Mellanox OFED 23.04
+openstack_image_rocky88_ofed2304:
+  name: "Rocky-8.8-OFED-23.04"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "epel"
+    - "selinux-permissive"
+    - "dhcp-all-interfaces"
+    - "vm"
+    - "grub2"
+    - "openssh-server"
+    - "block-device-efi"
+    - "dracut-regenerate"
+  is_public: False
+  packages:
+    - "gdisk"
+    - "efibootmgr"
+    - "efivar"
+    - "bash-completion"
+    - "git"
+    - "linux-firmware"
+    - "logrotate"
+    - "lshw"
+    - "man-db"
+    - "net-tools"
+    - "nmon"
+    - "pciutils"
+    - "tmux"
+    - "vim-enhanced"
+    - "NetworkManager-initscripts-updown"
+    - "dracut"
+    - "dracut-network"
+  env:
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-8.8-ofed-23.04"
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - /
+    YUM: dnf
+    DIB_RELEASE: "8.8"
+    DIB_DRACUT_ENABLED_MODULES:
+      - name: lvm
+        packages:
+          - lvm2
+      - name: kernel-modules
+      - name: kernel-network-modules
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "8.8"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
+# Rocky Linux 9.1 plus OFED 5.8 drivers
+openstack_image_rocky91_ofed58:
+  name: "Rocky-9.1-OFED-5.8"
+  type: "raw"
+  elements:
+    - "rocky-container"
+    - "cloud-init"
+    - "cloud-init-growpart"
+    - "selinux-permissive"
+    - "vm"
+    - "openssh-server"
+    - "dracut-regenerate"
+  is_public: False
+  packages:
+    - "git"
+    - "tmux"
+    - "vim-enhanced"
+    - "lshw"
+    - "pciutils"
+    - "infiniband-diags"
+  env:
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-9.1-ofed-5.8"
+    DIB_CONTAINERFILE_NETWORK_DRIVER: host
+    DIB_CONTAINERFILE_RUNTIME: docker
+    YUM: dnf
+    DIB_CLOUD_INIT_GROWPART_DEVICES:
+      - "/"
+    DIB_RELEASE: "9.1"
+  properties:
+    os_type: "linux"
+    os_distro: "rocky"
+    os_version: "9.1"
+    hw_vif_multiqueue_enabled: true
+    hw_scsi_model: "virtio-scsi"
+    hw_disk_bus: "scsi"
+
