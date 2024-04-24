@@ -59,11 +59,16 @@ openstack_unlimited_quotas:
   cores: -1
   floatingip: -1
   gigabytes: -1
+  health_monitors: -1
   injected_file_size: -1
   injected_files: -1
   instances: -1
   key_pairs: -1
+  listeners: -1
+  load_balancers: -1
+  members: -1
   per_volume_gigabytes: -1
+  pools: -1
   ram: -1
   security_group: -1
   security_group_rule: -1
