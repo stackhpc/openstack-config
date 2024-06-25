@@ -4,7 +4,7 @@
   tags:
     - networks
   roles:
-    - role: stackhpc.os-networks
+    - role: stackhpc.openstack.os_networks
       os_networks_venv: "{{ openstack_venv }}"
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"
@@ -12,3 +12,4 @@
       os_networks: "{{ openstack_networks }}"
       os_networks_routers: "{{ openstack_routers }}"
       os_networks_security_groups: "{{ openstack_security_groups }}"
+      os_networks_rbac: "{{ openstack_networks_rbac }}"

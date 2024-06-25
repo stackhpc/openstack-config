@@ -1,0 +1,31 @@
+# Magnum cluster templates generated using latest upstream release tags
+# To make use of the generated config snippets, copy them to the
+# openstack_container_clusters_templates list.
+
+# List snippet to add to existing openstack_container_clusters_templates:
+{% for item in new_template_data %}
+# -{% raw %} "{{ {% endraw %}{{ item.key | replace('-', '_') }}_{{ item.value.kubernetes_version | replace('.', '_') }}{% raw %} }}"{% endraw %}
+
+{% endfor %}
+
+{% for item in new_template_data %}
+{{ item.key | replace('-', '_') }}_{{ item.value.kubernetes_version | replace('.', '_') }}:
+  labels:
+    monitoring_enabled: "true"
+    kube_dashboard_enabled: "true"
+    keystone_auth_enabled: "false"
+    capi_helm_chart_version: "{{ capi_helm_chart_release_data.json.tag_name }}"
+    octavia_provider: {{ magnum_loadbalancer_provider }}
+  external_network_id: {{ magnum_external_net_name }}
+  master_flavor: {{ magnum_default_master_flavor_name }}
+  flavor: {{ magnum_default_worker_flavor_name }}
+  image: "{{ item.value.name }}"
+  name: "{{ item.key }}"
+  coe: "kubernetes"
+  network_driver: "{{ magnum_default_network_driver | default('calico') }}"
+  master_lb_enabled: "{{ magnum_master_lb_enabled | default('True') }}"
+  floating_ip_enabled: "{{ magnum_cluster_floating_ip_enabled | default('True') }}"
+  dns_nameserver: "{{ (magnum_cluster_default_dns_nameservers | default(['1.1.1.1', '8.8.8.8', '8.8.4.4'])) | join(',') }}"
+  public: "{{ magnum_cluster_templates_public | default('True') }}"
+
+{% endfor %}
