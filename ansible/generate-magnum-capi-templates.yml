@@ -15,12 +15,12 @@
 
   - name: Fetch capi-helm-charts release information
     ansible.builtin.uri:
-      url: https://api.github.com/repos/stackhpc/capi-helm-charts/releases/latest
+      url: https://api.github.com/repos/azimuth-cloud/capi-helm-charts/releases/latest
     register: capi_helm_chart_release_data
 
   - name: Fetch dependencies.json for capi-helm-charts release
     ansible.builtin.uri:
-      url: https://raw.githubusercontent.com/stackhpc/capi-helm-charts/{{ capi_helm_chart_release_data.json.tag_name }}/dependencies.json
+      url: https://raw.githubusercontent.com/azimuth-cloud/capi-helm-charts/{{ capi_helm_chart_release_data.json.tag_name }}/dependencies.json
     register: dependencies_response
 
   - name: Ensure wget packages is installed
@@ -31,10 +31,10 @@
 
   - name: Fetch manifest.json for capi-helm-charts images
     # ansible.builtin.uri:
-    #   url: https://raw.githubusercontent.com/stackhpc/azimuth-images/{{ dependencies_response.json['azimuth-images'] }}/manifest.json
+    #   url: https://raw.githubusercontent.com/azimuth-cloud/azimuth-images/{{ dependencies_response.json['azimuth-images'] }}/manifest.json
     # Above URL returns 404 even though similar URL for capi-helm-charts repo works fine
     # Not sure why but fall back to wget + JSON parsing for now.
-    shell: "wget -O - https://github.com/stackhpc/azimuth-images/releases/download/{{ dependencies_response.json['azimuth-images'] }}/manifest.json"
+    shell: "wget -O - https://github.com/azimuth-cloud/azimuth-images/releases/download/{{ dependencies_response.json['azimuth-images'] }}/manifest.json"
     register: manifest_response
     changed_when: false
 
