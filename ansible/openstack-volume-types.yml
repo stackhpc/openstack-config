@@ -1,0 +1,12 @@
+---
+- name: Ensure OpenStack volume types exist
+  hosts: localhost
+  tags:
+    - volume-types
+  roles:
+    - role: stackhpc.openstack.os_volumes
+      os_volumes_venv: "{{ openstack_venv }}"
+      os_volumes_auth_type: "{{ openstack_auth_type }}"
+      os_volumes_auth: "{{ openstack_auth }}"
+      os_volumes_cacert: "{{ openstack_cacert }}"
+      os_volumes_types: "{{ openstack_volumes_types }}"

@@ -1,0 +1,21 @@
+---
+###############################################################################
+# Configuration of volume types for openstack.
+
+# List of volume types. Format is as required by the stackhpc.os-volumes role.
+openstack_volumes_types:
+  - "{{ openstack_volume_type_ceph_hdd }}"
+  - "{{ openstack_volume_type_ceph_ssd }}"
+
+# Volume types
+openstack_volume_type_ceph_hdd:
+  name: "ceph-hdd"
+  description: "Ceph HDD pool"
+  extra_specs:
+    volume_backend_name: "replicated-hdd"
+
+openstack_volume_type_ceph_ssd:
+  name: "ceph-ssd"
+  description: "Ceph SSD pool"
+  extra_specs:
+    volume_backend_name: "replicated-ssd"
