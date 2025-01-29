@@ -1,10 +1,11 @@
 ---
 # Top level playbook that includes all others.
-- import_playbook: openstack-project.yml
-- import_playbook: openstack-networks.yml
-- import_playbook: openstack-flavors.yml
-- import_playbook: openstack-images.yml
-- import_playbook: openstack-host-aggregates.yml
-- import_playbook: openstack-volume-types.yml
-- import_playbook: openstack-container-clusters.yml
-- import_playbook: openstack-ratings.yml
+
+- import_playbook: openstack-project.yml  # noqa name[play]
+- import_playbook: openstack-networks.yml  # noqa name[play]
+- import_playbook: openstack-flavors.yml  # noqa name[play]
+- import_playbook: openstack-images.yml  # noqa name[play]
+- import_playbook: openstack-host-aggregates.yml  # noqa name[play]
+- import_playbook: openstack-volume-types.yml  # noqa name[play]
+- import_playbook: openstack-container-clusters.yml  # noqa name[play]
+- import_playbook: openstack-ratings.yml  # noqa name[play]

@@ -34,7 +34,7 @@ openstack_image_centos_stream8:
     - "vm"
     - "grub2"
     - "stable-interface-names"
-  is_public: True
+  is_public: true
   env:
     YUM: dnf
     DIB_RELEASE: "8-stream"
@@ -55,7 +55,7 @@ openstack_image_cirros_0_6_0:
   type: qcow2
   image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
   checksum: "md5:f4027b89e99e238184e13089a3155b74"
-  is_public: True
+  is_public: true
   properties:
     os_type: "linux"
     os_distro: "cirros"
@@ -78,7 +78,7 @@ openstack_image_rocky8:
     - "grub2"
     - "stable-interface-names"
     - "openssh-server"
-  is_public: True
+  is_public: true
   packages:
     - "bash-completion"
     - "vim-enhanced"
@@ -101,7 +101,7 @@ openstack_image_rocky8:
 openstack_image_ubuntu_focal:
   name: "Ubuntu-20.04"
   type: raw
-  is_public: True
+  is_public: true
   elements:
     # Required for UEFI mode:
     - "block-device-efi"
