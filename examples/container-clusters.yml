@@ -9,7 +9,7 @@ openstack_container_clusters_templates:
 
 # Kubernetes magnum cluster template.
 openstack_container_clusters_template_k8s_fedora_coreos:
-  labels: "heat_container_agent_tag=ussuri-stable-1,kube_tag=v1.18.9,cloud_provider_tag=v1.18.2,monitoring_enabled=true,auto_scaling_enabled=true,auto_healing_enabled=true,auto_healing_controller=magnum-auto-healer,magnum_auto_healer_tag=latest,master_lb_floating_ip_enabled=true,cinder_csi_enabled=true,ingress_controller=octavia"
+  labels: "heat_container_agent_tag=ussuri-stable-1,kube_tag=v1.18.9,cloud_provider_tag=v1.18.2,monitoring_enabled=true,auto_scaling_enabled=true,auto_healing_enabled=true,auto_healing_controller=magnum-auto-healer,magnum_auto_healer_tag=latest,master_lb_floating_ip_enabled=true,cinder_csi_enabled=true,ingress_controller=octavia"  # noqa yaml[line-length]
   external-network: "external"
   master-flavor: "m1.medium"
   flavor: "m1.medium"
