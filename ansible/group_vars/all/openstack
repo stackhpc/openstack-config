@@ -66,9 +66,9 @@ openstack_container_clusters_templates: []
 ###############################################################################
 # Configuration variables for a CloudKitty ratings service deployment.
 
-# A list where each item is a dictionary mapping the associated fields, 
-# with the 'mappings' field also being a list of dictionaries. 
-# Example of the mappings and their fields can be found below, 
+# A list where each item is a dictionary mapping the associated fields,
+# with the 'mappings' field also being a list of dictionaries.
+# Example of the mappings and their fields can be found below,
 # however for more information please refer to the README.md file.
 #
 openstack_ratings_hashmap_field_mappings: []
@@ -77,3 +77,7 @@ openstack_ratings_hashmap_field_mappings: []
 # dictionaries, however these are not associated with a field.
 #
 openstack_ratings_hashmap_service_mappings: []
+
+###############################################################################
+# Configuration of volumes for OpenStack.
+openstack_volumes_types: []
