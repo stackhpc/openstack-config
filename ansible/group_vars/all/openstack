@@ -81,3 +81,7 @@ openstack_ratings_hashmap_service_mappings: []
 ###############################################################################
 # Configuration of volumes for OpenStack.
 openstack_volumes_types: []
+
+###############################################################################
+# Configuration of Cloudkitty for OpenStack.
+openstack_cloudkitty_enable: false
