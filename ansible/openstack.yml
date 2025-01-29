@@ -9,3 +9,4 @@
 - import_playbook: openstack-volume-types.yml  # noqa name[play]
 - import_playbook: openstack-container-clusters.yml  # noqa name[play]
 - import_playbook: openstack-ratings.yml  # noqa name[play]
+  when: openstack_cloudkitty_enable | bool
