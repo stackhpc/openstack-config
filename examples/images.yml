@@ -20,6 +20,11 @@ openstack_images:
   - "{{ openstack_image_rocky8 }}"
   - "{{ openstack_image_ubuntu_focal }}"
 
+# Common GRUB settings for VM images
+openstack_grub_env_common:
+  DIB_GRUB_TIMEOUT: 0
+  DIB_GRUB_TIMEOUT_STYLE: hidden
+
 # CentOS Stream 8.
 openstack_image_centos_stream8:
   name: "CentOS-stream8"
