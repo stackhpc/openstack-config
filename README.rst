@@ -112,3 +112,7 @@ be sure to run the ``openstack-images.yml`` playbook *before* running the
 ``openstack-container-clusters.yml`` playbook, otherwise the Magnum API will return
 an error referencing an invalid cluster type with image ``None``. This is handled
 automatically if running the full ``openstack.yml`` playbook.
+
+Note that these templates are a tested set against the specific CAPI management
+cluster release. As such, you should make sure to update your CAPI management
+cluster to the latest release before updating to the latest templates.
