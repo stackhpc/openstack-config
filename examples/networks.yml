@@ -125,12 +125,16 @@ openstack_router_demo:
 # List of security groups in the openstack demo project.
 # Format is as required by the stackhpc.os-networks role.
 openstack_security_groups:
-  # Default security group for the openstack demo project.
-  - name: default
+  # ICMP security group for the openstack demo project.
+  - name: ICMP
     project: demo
     rules:
       # Allow ICMP (for ping, etc.).
       - protocol: icmp
+  # SSH security group for the openstack demo project.
+  - name: SSH
+    project: demo
+    rules:
       # Allow SSH.
       - protocol: tcp
         port_range_min: 22

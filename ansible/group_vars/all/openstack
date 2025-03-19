@@ -62,3 +62,26 @@ openstack_host_aggregates: []
 # List of clusters templates in the openstack project. Format is as required by the
 # stackhpc.os-container-clusters role.
 openstack_container_clusters_templates: []
+
+###############################################################################
+# Configuration variables for a CloudKitty ratings service deployment.
+
+# A list where each item is a dictionary mapping the associated fields,
+# with the 'mappings' field also being a list of dictionaries.
+# Example of the mappings and their fields can be found below,
+# however for more information please refer to the README.md file.
+#
+openstack_ratings_hashmap_field_mappings: []
+
+# Much like the field mappings above, the service mappings are a list of
+# dictionaries, however these are not associated with a field.
+#
+openstack_ratings_hashmap_service_mappings: []
+
+###############################################################################
+# Configuration of volumes for OpenStack.
+openstack_volumes_types: []
+
+###############################################################################
+# Configuration of Cloudkitty for OpenStack.
+openstack_cloudkitty_enable: false
