@@ -4,11 +4,11 @@
 
 # List of OpenStack domains. Format is as required by the stackhpc.os-projects
 # role.
-#openstack_domains:
+# openstack_domains:
 
 # List of OpenStack projects. Format is as required by the stackhpc.os-projects
 # role.
-#openstack_projects:
+# openstack_projects:
 
 ###############################################################################
 # Configuration of networks, subnets and routers for openstack.
@@ -145,7 +145,7 @@ openstack_security_groups:
 
 # List of RBAC definitions in the openstack projct. Format is as required by the
 # stackhpc.os-networks role.
-#openstack_networks_rbac:
+# openstack_networks_rbac:
 
 ###############################################################################
 # Configuration of nova flavors.
@@ -195,7 +195,7 @@ openstack_flavor_m1_xlarge:
 
 # List of nova host aggregates. Format is as required by the
 # stackhpc.os_host_aggregates role.
-#openstack_host_aggregates:
+# openstack_host_aggregates:
 
 ###############################################################################
 # Configuration of Glance software images.
@@ -208,7 +208,7 @@ openstack_image_cirros_0_6_0:
   name: "cirros"
   type: qcow2
   image_url: "https://github.com/cirros-dev/cirros/releases/download/0.6.0/cirros-0.6.0-x86_64-disk.img"
-  is_public: True
+  is_public: true
   properties:
     os_type: "linux"
     os_distro: "cirros"
@@ -216,18 +216,18 @@ openstack_image_cirros_0_6_0:
     hw_rng_model: "virtio"
 
 # List of Diskimage Builder (DIB) elements paths to include in image builds.
-#openstack_image_elements:
+# openstack_image_elements:
 
 # List of Diskimage Builder (DIB) elements Git repositories to use in image
 # builds.
-#openstack_image_git_elements:
+# openstack_image_git_elements:
 
 ###############################################################################
 # Configuration of Magnum container clusters.
 
 # List of magnum cluster templates. Format is as required by the
 # stackhpc.os-container-clusters role.
-#openstack_container_clusters_templates:
+# openstack_container_clusters_templates:
 
 ###############################################################################
 # Configuration variables for generating new Magnum cluster template config.
@@ -261,3 +261,38 @@ openstack_image_cirros_0_6_0:
 
 # Whether generated cluster templates should be public by default (defaults to 'True')
 # magnum_cluster_templates_public:
+
+###############################################################################
+# Configuration variables for a CloudKitty ratings service deployment.
+
+#     #    ###   #######  #####    IN ORDER TO SUCCESSFULLY DEPLOY CLOUDKITTY
+# #   #   #   #     #     #        'cloudkitty.conf' & 'metrics.yml' MUST BE
+#  #  #   #   #     #     ###      PROVIDED ALONGSIDE THE FOLLOWING CONFIG.
+#   # #   #   #     #     #        MORE INFO CAN BE FOUND IN THE README.md
+#     #    ###      #     #####    'stackhpc-kayobe-config' DOCS.
+# A list where each item is a dictionary mapping the associated fields,
+# with the 'mappings' field also being a list of dictionaries. Example
+# of the mappings and their fields can be found below, however for more
+# information please refer to the stackhpc.openstack.os_ratings role docs.
+#
+# openstack_ratings_hashmap_field_mappings:
+#   - service: SERVICE_NAME
+#     name: FIELD_NAME
+#     mappings:
+#       - value: MAPPING_VALUE
+#         cost: MAPPING_COST
+#         type: MAPPING_TYPE
+#         group: MAPPING_GROUP <---THIS IS OPTIONAL---
+
+# Much like the field mappings above, the service mappings are a list of
+# dictionaries, however these are not associated with a field.
+#
+# openstack_ratings_hashmap_service_mappings:
+#   - service: SERVICE_NAME
+#     cost: MAPPING_COST
+#     type: MAPPING_TYPE
+#     group: MAPPING_GROUP <---THIS IS OPTIONAL---
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: true

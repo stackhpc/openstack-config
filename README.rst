@@ -3,26 +3,26 @@ OpenStack Configuration
 =============================================
 
 This project contains Ansible playbooks and configuration of infrastructure on
-an existing OpenStack cloud for the OpenStack system. (Supported up to Yoga
-release.)
+an existing OpenStack cloud for the OpenStack system. 
 
 Preparation
 ===========
 
 Ensure that Ansible is installed, either via the system package manager or pip.
-If required, use a virtualenv to avoid interference with the system python
-packages. For example:
+It is recommended that you use a python virtual environment to avoid
+interference with the system python packages. For example:
 
 .. code-block::
 
-   $ virtualenv venv
-   $ source venv/bin/activate
+   $ python3 -m venv openstack-venv
+   $ source openstack-venv/bin/activate
    $ python -m pip install --upgrade pip
    $ pip install -r requirements.txt
 
 Install Ansible role and collection dependencies from Ansible Galaxy:
 
 .. code-block::
+
    $ ansible-galaxy collection install \
        -p ansible/collections \
        -r requirements.yml
@@ -87,10 +87,16 @@ variables in `etc/openstack-config.yml`
 
 .. code-block:: yaml
 
-   magnum_default_master_flavor_name: # Chosen flavor on target cloud
-   magnum_default_worker_flavor_name: # Chosen flavor on target cloud
-   magnum_external_net_name: # External network
-   magnum_loadbalancer_provider: # Octavia provider (e.g. 'ovn')
+   # Chosen flavor on target cloud
+   magnum_default_master_flavor_name:
+   # Chosen flavor on target cloud
+   magnum_default_worker_flavor_name:
+   # External network to use for load balancers etc.
+   magnum_external_net_name:
+   # Octavia provider (e.g. 'ovn')
+   magnum_loadbalancer_provider:
+   # Optional list of extra labels to add to all generated cluster templates
+   magnum_template_extra_labels:
 
 then run the provided playbook with
 

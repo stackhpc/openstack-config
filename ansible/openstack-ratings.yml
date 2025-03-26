@@ -1,0 +1,10 @@
+---
+- name: Generate OpenStack software ratings
+  hosts: localhost
+  tags:
+    - ratings
+  roles:
+    - role: stackhpc.openstack.os_ratings
+      os_ratings_hashmap_field_mappings: "{{ openstack_ratings_hashmap_field_mappings }}"
+      os_ratings_hashmap_service_mappings: "{{ openstack_ratings_hashmap_service_mappings }}"
+      os_ratings_venv: "{{ openstack_venv }}"
