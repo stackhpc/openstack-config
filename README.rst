@@ -93,12 +93,17 @@ variables in `etc/openstack-config.yml`
    magnum_default_worker_flavor_name:
    # External network to use for load balancers etc.
    magnum_external_net_name:
-   # Octavia provider (e.g. 'ovn')
-   magnum_loadbalancer_provider:
    # Optional list of extra labels to add to all generated cluster templates
    magnum_template_extra_labels:
 
-then run the provided playbook with
+The load balancer provider defaults to OVN. This can be changed to Amphora, but you
+should only do this if OVN load balancers are unavailable.
+
+.. code-block:: yaml
+
+   magnum_loadbalancer_provider: amphora
+
+Then run the provided playbook with
 
 .. code-block:: bash
 
