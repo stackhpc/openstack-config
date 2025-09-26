@@ -1,0 +1,60 @@
+# Based on https://github.com/openstack/diskimage-builder/blob/master/diskimage_builder/elements/rocky-container/containerfiles/9
+
+FROM quay.io/rockylinux/rockylinux:9
+
+# Workaround for containerized kernel tools
+RUN echo "9.6" > /etc/dnf/vars/releasefullver && \
+# Can't update packages in DIB once OFED is installed as it provides some "older" packages
+RUN dnf update -y \
+  ; dnf -y install chkconfig
+
+RUN dnf group install -y 'Minimal Install' --allowerasing && \
+    dnf install -y findutils util-linux sudo python3 NetworkManager \
+    NetworkManager-config-server curl libcurl --allowerasing
+
+RUN systemctl unmask console-getty.service dev-hugepages.mount \
+    getty.target sys-fs-fuse-connections.mount systemd-logind.service \
+    systemd-remount-fs.service
+
+# /etc/machine-id needs to be populated for /bin/kernel-install to
+# correctly copy kernels into /boot.  We will clear this out in the
+# final image.
+RUN systemd-machine-id-setup
+
+# Install base build dependencies required by DOCA OFED
+RUN dnf config-manager --set-enabled appstream crb && \
+    dnf install -y \
+        perl cmake kernel-devel \
+        python3-devel perl-generators python3 rpm-build \
+        elfutils-libelf-devel zlib-devel gcc-c++ gdb-headless \
+        glib2-devel patch lsof libmnl openssl-devel \
+        pciutils-devel pkgconf-pkg-config libstdc++-devel \
+        libnl3-devel libtool numactl-devel systemd-devel \
+        kernel-rpm-macros glibc-devel pciutils gcc valgrind-devel \
+        iptables-devel bison libdb-devel elfutils-devel \
+        tcsh binutils-devel flex gcc-gfortran python3-Cython \
+        python3-docutils libmnl-devel wget curl
+
+# Install DOCA OFED 2.9.3 and use doca-kernel-support
+# Set DOCA version
+ENV DOCA_VERSION=2.9.3
+
+# Create repository file (multiline, because parser issues)
+RUN echo "[doca]" > /etc/yum.repos.d/doca.repo && \
+    echo "name=DOCA Online Repo" >> /etc/yum.repos.d/doca.repo && \
+    echo "baseurl=https://linux.mellanox.com/public/repo/doca/${DOCA_VERSION}/rhel9.6/x86_64/" >> /etc/yum.repos.d/doca.repo && \
+    echo "enabled=1" >> /etc/yum.repos.d/doca.repo && \
+    echo "gpgcheck=0" >> /etc/yum.repos.d/doca.repo
+
+# Install packages (query kernel version for doca-kernel-support using rpm, as uname -r returns builder kernel version)
+RUN dnf makecache && \
+    dnf install -y doca-ofed doca-extra && \
+    LATEST_KERNEL=$(rpm -qa kernel-core --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}\n' | sort -V | tail -n 1) && \
+    /opt/mellanox/doca/tools/doca-kernel-support -k "${LATEST_KERNEL}" && \
+    GENERATED_RPM=$(find /tmp -name 'doca-kernel-repo-*.rpm' | head -n 1) && \
+    echo "Installing kernel repo from: ${GENERATED_RPM}" && \
+    rpm -i "${GENERATED_RPM}" && \
+    dnf makecache && \
+    dnf install -y doca-ofed-userspace && \
+    dnf install -y --disablerepo=doca doca-kernel-* && \
+    dnf clean all
