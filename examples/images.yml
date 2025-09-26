@@ -53,6 +53,7 @@ openstack_image_centos_stream8:
     os_distro: "centos"
     os_version: "8-stream"
     hw_rng_model: "virtio"
+    hw_architecture: "x86_64"
 
 # Cirros 0.6.0
 openstack_image_cirros_0_6_0:
@@ -66,6 +67,7 @@ openstack_image_cirros_0_6_0:
     os_distro: "cirros"
     os_version: "0.6.0"
     hw_rng_model: "virtio"
+    hw_architecture: "x86_64"
 
 # Rocky Linux 9.
 openstack_image_rocky9:
@@ -101,6 +103,7 @@ openstack_image_rocky9:
     os_distro: "rocky"
     os_version: "9"
     hw_rng_model: "virtio"
+    hw_architecture: "x86_64"
 
 # Ubuntu Jammy 22.04.
 openstack_image_ubuntu_jammy:
@@ -126,6 +129,7 @@ openstack_image_ubuntu_jammy:
     os_distro: "ubuntu"
     os_version: "jammy"
     hw_rng_model: "virtio"
+    hw_architecture: "x86_64"
   env:
     DIB_RELEASE: "jammy"
     DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
