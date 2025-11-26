@@ -10,6 +10,8 @@ openstack_flavors:
   - "{{ openstack_flavor_m1_medium }}"
   - "{{ openstack_flavor_m1_large }}"
   - "{{ openstack_flavor_m1_xlarge }}"
+  - "{{ openstack_flavor_m1_tiny_projectA }}"
+  - "{{ openstack_flavor_m1_tiny_projectB }}"
 
 # Virtual machine flavors.
 openstack_flavor_m1_tiny:
@@ -41,3 +43,29 @@ openstack_flavor_m1_xlarge:
   ram: 16384
   disk: 100
   vcpus: 8
+
+
+
+# Example of flavors with configured project access to them. "is_public"  
+# parameter is mandatory in such case.
+openstack_flavor_projects:
+  - "demo"
+  - "project_a"
+
+openstack_flavor_m1_tiny_privateA:
+  name: "m1.tiny_private"
+  ram: 512
+  disk: 1
+  vcpus: 1
+  project: "{{ openstack_flavor_projects }}"
+  is_public: "false"
+
+openstack_flavor_m1_tiny_privateB:
+  name: "m1.tiny_private2"
+  ram: 512
+  disk: 1
+  vcpus: 1
+  project:
+    - "project_b"
+    - "demo"
+  is_public: "false"
