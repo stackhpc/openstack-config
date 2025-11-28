@@ -4,29 +4,37 @@ SCRIPT=${BASH_SOURCE[0]}
 TOOLS_PATH=$(dirname ${SCRIPT})
 OPENSTACK_CONFIG_PATH=$(dirname ${TOOLS_PATH})
 cd ${OPENSTACK_CONFIG_PATH}
+MANDATORY_PARAM=false
 
 PLAYBOOK=ansible/openstack.yml
 
-while getopts ":p:" opt; do
+while getopts ":p:e:" opt; do
   case $opt in
     p)
       PLAYBOOK=${OPTARG}
       ;;
+
+    e)
+      MANDATORY_PARAM=true;
+      ENV="-${OPTARG}"
+      ;;
     \?)
-      echo "Invalid option: -$opt"
-      echo "Usage: ${0} [-p <playbook>] [-- <other arguments to ansible-playbook>]"
+      echo "Invalid option: -$OPTARG"
+      echo "Usage: ${0} [-p <playbook>] [-e <kayobe environment name>] [-- <other arguments to ansible-playbook>]"
       exit 1
       ;;
   esac
-  if [[ -n ${OPTARG} ]]; then
-    shift
-  fi
-  shift
 done
 
-if [[ $1 == '--' ]]; then
-    shift
+# Fail as mandatory environment paremeter is missing
+if ! $MANDATORY_PARAM
+then
+    echo "-e missing - environment parameter is mandatory" >&2
+    exit 1
 fi
+
+# Removing parameters already parsed with getopts
+shift $(( OPTIND - 1 ))
 
 echo "Running playbook $PLAYBOOK"
 
