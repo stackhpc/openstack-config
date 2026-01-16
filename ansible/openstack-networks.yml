@@ -5,11 +5,15 @@
     - networks
   roles:
     - role: stackhpc.openstack.os_networks
-      os_networks_venv: "{{ openstack_venv }}"
-      os_networks_auth_type: "{{ openstack_auth_type }}"
-      os_networks_auth: "{{ openstack_auth }}"
-      os_networks_cacert: "{{ openstack_cacert }}"
       os_networks: "{{ openstack_networks }}"
+      os_networks_address_scopes: "{{ openstack_address_scopes }}"
+      os_networks_auth: "{{ openstack_auth }}"
+      os_networks_auth_type: "{{ openstack_auth_type }}"
+      os_networks_bgp_peers: "{{ openstack_bgp_peers }}"
+      os_networks_bgp_speakers: "{{ openstack_bgp_speakers }}"
+      os_networks_cacert: "{{ openstack_cacert }}"
+      os_networks_rbac: "{{ openstack_networks_rbac }}"
       os_networks_routers: "{{ openstack_routers }}"
       os_networks_security_groups: "{{ openstack_security_groups }}"
-      os_networks_rbac: "{{ openstack_networks_rbac }}"
+      os_networks_subnet_pools: "{{ openstack_subnet_pools }}"
+      os_networks_venv: "{{ openstack_venv }}"
