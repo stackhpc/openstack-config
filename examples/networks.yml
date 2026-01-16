@@ -139,3 +139,16 @@ openstack_security_groups:
       - protocol: tcp
         port_range_min: 22
         port_range_max: 22
+
+# Example BGP Peer and Speaker
+# Format is as required by the stackhpc.os-networks role.
+openstack_bgp_speakers:
+  - name: bgpspeaker1
+    local_as: 64002
+  - name: bgpspeaker2
+    local_as: 64002
+
+openstack_bgp_peers:
+  - name: bgp-peer-switch
+    peer_ip: 10.0.0.254
+    remote_as: 64001
