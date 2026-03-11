@@ -4,7 +4,6 @@ SCRIPT=${BASH_SOURCE[0]}
 TOOLS_PATH=$(dirname ${SCRIPT})
 OPENSTACK_CONFIG_PATH=$(dirname ${TOOLS_PATH})
 cd ${OPENSTACK_CONFIG_PATH}
-MANDATORY_PARAM=false
 
 PLAYBOOK=ansible/openstack.yml
 
@@ -15,7 +14,6 @@ while getopts ":p:e:" opt; do
       ;;
 
     e)
-      MANDATORY_PARAM=true;
       ENV="-${OPTARG}"
       ;;
     \?)
@@ -25,13 +23,6 @@ while getopts ":p:e:" opt; do
       ;;
   esac
 done
-
-# Fail as mandatory environment paremeter is missing
-if ! $MANDATORY_PARAM
-then
-    echo "-e missing - environment parameter is mandatory" >&2
-    exit 1
-fi
 
 # Removing parameters already parsed with getopts
 shift $(( OPTIND - 1 ))
