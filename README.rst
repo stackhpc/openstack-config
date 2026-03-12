@@ -57,10 +57,11 @@ To configure OpenStack infrastructure:
 
    $ tools/openstack-config
 
-Optionally provide environment name if using multiple environments:
+Support for Kayobe multiple environments is provided using environment name switch and appending '-environment_name' to the config file:
 
 .. code-block::
 
+   $ ls ./etc/openstack-config/openstack-config-<environment name>.yml
    $ tools/openstack-config -e <environment name>
 
 To run a specific playbook:
