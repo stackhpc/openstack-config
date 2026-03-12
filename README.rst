@@ -57,6 +57,12 @@ To configure OpenStack infrastructure:
 
    $ tools/openstack-config
 
+Optionally provide environment name if using multiple environments:
+
+.. code-block::
+
+   $ tools/openstack-config -e <environment name>
+
 To run a specific playbook:
 
 .. code-block::
