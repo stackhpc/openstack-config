@@ -5,7 +5,7 @@ name: Pull request
 jobs:
   lint:
     if: github.repository == 'stackhpc/openstack-config'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions: {}
     strategy:
       fail-fast: false
