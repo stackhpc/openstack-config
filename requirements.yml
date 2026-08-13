@@ -3,4 +3,4 @@ collections:
   - name: openstack.cloud
     version: 2.6.0
   - name: stackhpc.openstack
-    version: 0.10.2
+    version: 0.11.0
