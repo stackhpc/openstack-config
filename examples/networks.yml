@@ -6,7 +6,7 @@
 # stackhpc.os-networks role.
 openstack_networks:
   - "{{ openstack_network_external }}"
-  - "{{ openstack_network_demo_vxlan }}"
+  - "{{ openstack_network_demo_geneve }}"
   - "{{ openstack_network_demo_vlan }}"
   - "{{ openstack_network_demo_provider }}"
 
@@ -35,22 +35,22 @@ openstack_subnet_external:
   allocation_pool_start: "10.60.2.0"
   allocation_pool_end: "10.60.5.255"
 
-# openstack demo VXLAN network name.
-openstack_network_demo_vxlan_name: "demo-vxlan"
+# openstack demo GENEVE network name.
+openstack_network_demo_geneve_name: "demo-geneve"
 
-# openstack demo VXLAN network.
-openstack_network_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
+# openstack demo GENEVE network.
+openstack_network_demo_geneve:
+  name: "{{ openstack_network_demo_geneve_name }}"
   project: demo
-  provider_network_type: "vxlan"
+  provider_network_type: "geneve"
   shared: false
   # Subnet configuration.
   subnets:
-    - "{{ openstack_subnet_demo_vxlan }}"
+    - "{{ openstack_subnet_demo_geneve }}"
 
-# openstack demo VXLAN subnet.
-openstack_subnet_demo_vxlan:
-  name: "{{ openstack_network_demo_vxlan_name }}"
+# openstack demo GENEVE subnet.
+openstack_subnet_demo_geneve:
+  name: "{{ openstack_network_demo_geneve_name }}"
   project: demo
   cidr: "10.1.0.0/24"
   gateway_ip: "10.1.0.1"
@@ -118,7 +118,7 @@ openstack_router_demo:
     project: demo
     interfaces:
       - "{{ openstack_network_demo_vlan_name }}"
-      - "{{ openstack_network_demo_vxlan_name }}"
+      - "{{ openstack_network_demo_geneve_name }}"
       - "{{ openstack_network_demo_provider_name }}"
     network: "{{ openstack_network_external_name }}"
 
