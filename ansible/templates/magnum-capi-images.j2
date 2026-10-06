@@ -18,8 +18,11 @@
   visibility: "public"
   properties:
     os_distro: "ubuntu"
-    os_version: "22.04"
+    os_version: "24.04"
     kube_version: "{{ item.value.kubernetes_version }}"
     hw_architecture: "x86_64"
+    hw_firmware_type: "uefi"
+    hw_disk_bus: "scsi"
+    hw_scsi_model: "virtio-scsi"
 
 {% endfor %}
