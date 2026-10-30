@@ -15,6 +15,7 @@ openstack_demo_project:
   project_domain: default
   user_domain: default
   users: "{{ openstack_demo_users }}"
+  groups: "{{ openstack_demo_groups }}"
   quotas: "{{ openstack_unlimited_quotas }}"
 
 # List of users in the openstack ResOps team. Format is as required by the
@@ -32,6 +33,22 @@ openstack_demo_users:
       <snip>
     email: bob@example.com
     roles: "{{ openstack_user_roles }}"
+
+openstack_demo_groups:
+  - name: demo_group
+    users:
+      - name: claire
+        password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          <snip>
+        email: claire@example.com
+      - name: dillan
+        password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          <snip>
+        email: dillan@example.com
+    roles: "{{ openstack_user_roles }}"
+
 
 # List of roles to apply to admin users in the openstack demo project.
 openstack_admin_roles:
