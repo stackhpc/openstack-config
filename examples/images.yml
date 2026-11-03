@@ -19,7 +19,7 @@ openstack_images:
   - "{{ openstack_image_cirros_0_6_0 }}"
   - "{{ openstack_image_rocky9 }}"
   - "{{ openstack_image_ubuntu_jammy }}"
-  - "{{ openstack_image_rocky9_doca_ofed }}"
+  - "{{ openstack_image_rocky_96_doca_ofed_350 }}"
 
 # Common GRUB settings for VM images
 openstack_grub_env_common:
@@ -131,15 +131,14 @@ openstack_image_ubuntu_jammy:
     DIB_RELEASE: "jammy"
     DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
 
-# Rocky Linux 9 with Doca Ofed enabled.
-openstack_image_rocky9_doca_ofed:
-  name: "Rocky9-doca-ofed"
-  type: raw
+# Rocky Linux 9.6 with DOCA OFED 3.5.0 enabled.
+openstack_image_rocky_96_doca_ofed_350:
+  name: "Rocky-9.6-DOCA-OFED-3.5.0"
+  type: "qcow2"
   elements:
     - "rocky-container"
     - "cloud-init"
     - "cloud-init-datasources"
-    - "enable-serial-console"
     - "block-device-efi"
     - "vm"
     - "openssh-server"
@@ -169,7 +168,7 @@ openstack_image_rocky9_doca_ofed:
     DIB_BOOTLOADER_DEFAULT_CMDLINE: "nofb nomodeset gfxpayload=text net.ifnames=1 rd.auto"
     DIB_GRUB_TIMEOUT: "5"
     DIB_GRUB_TIMEOUT_STYLE: "menu"
-    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-latest-doca-ofed"
+    DIB_CONTAINERFILE_DOCKERFILE: "{{ playbook_dir }}/../containerfiles/rocky-9.6-doca-ofed-3.5.0"
     DIB_CONTAINERFILE_NETWORK_DRIVER: host
     DIB_CONTAINERFILE_RUNTIME: docker
     YUM: dnf
